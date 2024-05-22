@@ -1,29 +1,38 @@
 import React, { useState } from "react";
 import Login from "./Login";
 import styles from "./Navigation.module.css";
-import logo from "../../public/Screenshot_2024-05-22_132736-removebg-preview.png";
+import logo from "../assets/Screenshot_2024-05-22_132736-removebg-preview.png";
+import Registration from "./Registration";
 
 function Navigation() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenLogin, setIsOpenLogin] = useState(false);
+  const [isOpenSignup, setIsOpenSignup] = useState(false);
 
-  function openModal() {
-    setIsOpen(true);
+  function openLoginModal() {
+    setIsOpenLogin(true);
+  }
+  function openSignupModal() {
+    setIsOpenSignup(true);
   }
 
   function closeModal() {
-    setIsOpen(false);
+    if (isOpenLogin === true) setIsOpenLogin(false);
+    if (isOpenSignup === true) setIsOpenSignup(false);
   }
 
   return (
     <nav className={styles.nav}>
       <img src={logo} className={styles.navLogo}></img>
       <div className={styles.btnContainer}>
-        <button className={styles.btnLogin} onClick={openModal}>
+        <button className={styles.btnLogin} onClick={openLoginModal}>
           Login
         </button>
-        <button className={styles.btnSign}>Sign Up</button>
+        <button className={styles.btnSign} onClick={openSignupModal}>
+          Sign Up
+        </button>
       </div>
-      {isOpen && <Login closeModal={closeModal} />}
+      {isOpenLogin && <Login closeModal={closeModal} />}
+      {isOpenSignup && <Registration closeModal={closeModal} />}
     </nav>
   );
 }
