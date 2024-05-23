@@ -1,5 +1,7 @@
 import React, { useReducer, useState } from "react";
 import styles from "./Registration.module.css";
+import axios from "axios";
+import Message from "./Message";
 
 const initialState = {
   username: "",
@@ -39,30 +41,50 @@ function reducer(state, action) {
           passwordConfirm: false,
         };
       }
-    case "registered":
-      if (state.password === state.password2) {
-        console.log(state.username, "you are registered!");
-        return initialState;
-      } else {
-        console.log("Passwords do not match");
-      }
-      return state;
+    case "clearForm":
+      return initialState;
     default:
       return state;
   }
 }
 
-const Registration = ({ closeModal }) => {
+const Registration = ({ closeModal, BASE_URL }) => {
   const [{ username, password, password2, email }, dispatch] = useReducer(
     reducer,
     initialState
   );
+
+  const [errorPassowrd, setErrorPassword] = useState(false);
+  const [existingUser, setExistingUser] = useState(false);
+
+  async function registerUser() {
+    try {
+      const res = await axios.post(`${BASE_URL}`, {
+        username,
+        email,
+        password,
+      });
+
+      dispatch({ type: "clearForm" });
+
+      console.log(res.data);
+    } catch (error) {
+      // console.error(error);
+      if (error.response && error.response.status === 400) {
+        console.log("User exists");
+        setExistingUser(true);
+      }
+
+      // alert("There was an error loading data...");
+    }
+  }
 
   function handleUsername(e) {
     dispatch({ type: "setUsername", payload: e.target.value });
   }
   function handleEmail(e) {
     dispatch({ type: "setEmail", payload: e.target.value });
+    setExistingUser(false);
   }
   function handlePassword(e) {
     dispatch({ type: "setPassword", payload: e.target.value });
@@ -73,7 +95,13 @@ const Registration = ({ closeModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({ type: "registered" });
+    if (password !== password2) {
+      setErrorPassword(true);
+      return;
+    }
+    setErrorPassword(false);
+    setExistingUser(false);
+    registerUser();
   };
 
   return (
@@ -118,6 +146,18 @@ const Registration = ({ closeModal }) => {
             onChange={handleConfirmPassword}
           />
           <button className={styles.btn}>Register</button>
+          {errorPassowrd && (
+            <Message
+              message="❌ Passwords do NOT match !"
+              style={{ color: "red" }}
+            />
+          )}
+          {existingUser && (
+            <Message
+              message="❌ User is already exists !"
+              style={{ color: "red" }}
+            />
+          )}
         </form>
       </div>
       <div className={styles.overlay}></div>
