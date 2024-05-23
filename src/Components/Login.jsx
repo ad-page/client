@@ -1,17 +1,18 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styles from "./Login.module.css";
+import axios from "axios";
 
 const initialState = {
-  username: "",
+  email: "",
   password: "",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "setUsername":
+    case "setEmail":
       return {
         ...state,
-        username: action.payload,
+        email: action.payload,
       };
     case "setPassword":
       return {
@@ -19,18 +20,37 @@ function reducer(state, action) {
         password: action.payload,
       };
     case "loggedIn":
-      console.log("Loggin in with", state.username, state.password);
+      console.log("Loggin in with", state.email, state.password);
       return initialState;
     default:
       return initialState;
   }
 }
 
-const Login = ({ closeModal }) => {
-  const [{ username, password }, dispatch] = useReducer(reducer, initialState);
+const Login = ({ closeModal, BASE_URL, handleLoginSuccess }) => {
+  const [{ password, email }, dispatch] = useReducer(reducer, initialState);
 
-  function handleChangeUsername(e) {
-    dispatch({ type: "setUsername", payload: e.target.value });
+  async function loginUser() {
+    try {
+      const res = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
+      });
+
+      const { token, username } = res.data;
+
+      localStorage.setItem("userData", JSON.stringify({ token, username }));
+
+      console.log(res.data);
+      handleLoginSuccess();
+    } catch (error) {
+      alert("There was an error loading data...");
+      console.error(error);
+    }
+  }
+
+  function handleChangeEmail(e) {
+    dispatch({ type: "setEmail", payload: e.target.value });
   }
   function handleChangePassword(e) {
     dispatch({ type: "setPassword", payload: e.target.value });
@@ -38,28 +58,29 @@ const Login = ({ closeModal }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
+    loginUser();
     dispatch({ type: "loggedIn" });
     closeModal();
   }
 
   return (
     <>
-      <div className={styles.modal} onSubmit={handleSubmit}>
+      <div className={styles.modal}>
         <button className={styles.btnCloseModal} onClick={closeModal}>
           &times;
         </button>
         <h2 className={styles.modalHeader}>
           Please login to your <br />
-          <span className={styles.highlight}>ad-page </span>
+          <span className={styles.highlight}>AdVantage </span>
           account
         </h2>
-        <form className={styles.modalForm}>
-          <label className={styles.label}>Username</label>
+        <form className={styles.modalForm} onSubmit={handleSubmit}>
+          <label className={styles.label}>Email</label>
           <input
             type="text"
             className={styles.input}
-            value={username}
-            onChange={handleChangeUsername}
+            value={email}
+            onChange={handleChangeEmail}
           />
 
           <label className={styles.label}>Password</label>
