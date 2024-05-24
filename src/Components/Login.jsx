@@ -37,9 +37,9 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess }) => {
         password,
       });
 
-      const { token, username } = res.data;
+      const { token, username, role } = res.data;
 
-      localStorage.setItem("userData", JSON.stringify({ token, username }));
+      localStorage.setItem("userData", JSON.stringify({ token, username, role }));
 
       console.log(res.data);
       handleLoginSuccess();
