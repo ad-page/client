@@ -27,7 +27,7 @@ function reducer(state, action) {
   }
 }
 
-const Login = ({ closeModal, BASE_URL, handleLoginSuccess }) => {
+const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole}) => {
   const [{ password, email }, dispatch] = useReducer(reducer, initialState);
 
   async function loginUser() {
@@ -40,6 +40,7 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess }) => {
       const { token, username, role } = res.data;
 
       localStorage.setItem("userData", JSON.stringify({ token, username, role }));
+      setUserRole(role)
 
       console.log(res.data);
       handleLoginSuccess();

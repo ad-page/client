@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react'
 
 const Filter = ({filterInputValue,setfilterInputValue,setfilterSelectValue}) => {
     const [categories, setcategories] = useState([])
-    // const [selectValue, setfilterSelectValue] = useState("all")
-    // const [filterInputValue, setfilterInputValue] = useState("")
 
     const getCategories = ()=>{
         try{
