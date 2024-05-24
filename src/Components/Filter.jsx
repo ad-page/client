@@ -6,7 +6,8 @@ import Comments from "./Comments";
 const Filter = ({
     filterInputValue,
     setfilterInputValue,
-    setfilterSelectValue
+    setfilterSelectValue,
+    setAdsShowOrder
 }) => {
     const [categories, setcategories] = useState([])
 
@@ -31,6 +32,9 @@ const Filter = ({
   const inputChange = (e) => {
     setfilterInputValue(e.target.value);
   };
+  const sortSelectChange =(e)=>{
+    setAdsShowOrder(e.target.value)
+  }
 
   return (
     <div>
@@ -48,6 +52,12 @@ const Filter = ({
               {cate.name}
             </option>
           ))}
+        </select>
+        <label htmlFor="sort">Price order: </label>
+        <select id="sort" onChange={sortSelectChange}>
+            <option value="default">--Chose--</option>
+            <option value="low">Lover prices</option>
+            <option value="high">hight pice</option>
         </select>
     </div>
   );

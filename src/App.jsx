@@ -10,6 +10,7 @@ import Ads from "./Components/Ads";
 function App() {
   const [filterSelectValue, setfilterSelectValue] = useState("all")
   const [filterInputValue, setfilterInputValue] = useState("")
+  const [adsShowOrder, setAdsShowOrder] = useState("default")
   const [userRole, setUserRole] = useState(localStorage.getItem("userData")?JSON.parse(localStorage.getItem("userData")).role:"none")
 
 
@@ -20,9 +21,13 @@ function App() {
       <Filter 
           filterInputValue={filterInputValue} 
           setfilterInputValue={setfilterInputValue} 
-          setfilterSelectValue={setfilterSelectValue}/>
+          setfilterSelectValue={setfilterSelectValue}
+          setAdsShowOrder={setAdsShowOrder}/>
       {userRole==="admin"?<Admin/>:null}
-      <Ads filterSelectValue={filterSelectValue} filterInputValue={filterInputValue}/>
+      <Ads 
+          filterSelectValue={filterSelectValue} 
+          filterInputValue={filterInputValue}
+          adsShowOrder={adsShowOrder}/>
 
     </>
   );

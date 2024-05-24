@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Comments from './Comments';
 
-const Ads = ({filterSelectValue, filterInputValue}) => {
+const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
     const [ads, setAds] = useState([]);
     const [comments, setComments] = useState({});
-    const adsCopy = ads
+    let adsCopy = ads
 
     const getAds = () => {
         axios.get("http://localhost:5000/api/ads").then((res) => setAds(res.data))
@@ -15,14 +15,17 @@ const Ads = ({filterSelectValue, filterInputValue}) => {
         getAds();
       }, []);
 
-    //   ad.name.includes(filterInputValue)||ad.description.includes(filterInputValue)?
+    // sorting
+    adsShowOrder==="low"?adsCopy.sort((a, b) => a.price - b.price):null
+    adsShowOrder==="high"?adsCopy.sort((a, b) => b.price - a.price):null
+
 
   return (
     <div>
         <h2>{filterSelectValue} Ads</h2>
             {filterSelectValue==="all"?
             <div>
-                {ads.map((ad) =>
+                {adsCopy.map((ad) =>
                 filterInputValue===""?
                     <div key={ad._id} className='advert'>
                         <div className='advert_images'>
@@ -45,9 +48,10 @@ const Ads = ({filterSelectValue, filterInputValue}) => {
                         <div className='advert_images'>
                         {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                         </div>
-                        <h2>{ad.name}</h2>
+                        {console.log(<span>{filterInputValue}</span>)}
+                        <h2>{ad.name.replace(filterInputValue, filterInputValue.toUpperCase())}</h2>
                         <h3>{ad.price}$</h3>
-                        <h4>{ad.description}</h4>
+                        <h4>{ad.description.replace(filterInputValue, filterInputValue.toUpperCase())}</h4>
                         <h5>{ad.category.name}</h5>
                         <h6>added by {ad.user.username}</h6>
                         <hr />
@@ -60,7 +64,7 @@ const Ads = ({filterSelectValue, filterInputValue}) => {
                 )}
             </div>:
                 <div>
-                    {ads.map((ad) => 
+                    {adsCopy.map((ad) => 
                     filterInputValue===""?
                         ad.category.name===filterSelectValue?
                             <div key={ad._id} className='advert'>
@@ -86,9 +90,9 @@ const Ads = ({filterSelectValue, filterInputValue}) => {
                                 <div className='advert_images'>
                                 {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                                 </div>
-                                <h2>{ad.name}</h2>
+                                <h2>{ad.name.replace(filterInputValue, filterInputValue.toUpperCase())}</h2>
                                 <h3>{ad.price}$</h3>
-                                <h4>{ad.description}</h4>
+                                <h4>{ad.description.replace(filterInputValue, filterInputValue.toUpperCase())}</h4>
                                 <h5>{ad.category.name}</h5>
                                 <h6>added by {ad.user.username}</h6>
                                 <hr />
