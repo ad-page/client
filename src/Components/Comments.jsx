@@ -18,7 +18,7 @@ const Comments = ({ adId, comments, setComments }) => {
     <div>
       <h5>Comments</h5>
       <ul>
-        {comments.map((comment, index) => (
+        {comments?.map((comment, index) => (
           <li key={index}>{comment.text}</li>
         ))}
       </ul>

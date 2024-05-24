@@ -9,9 +9,6 @@ const Filter = ({
     setfilterSelectValue
 }) => {
     const [categories, setcategories] = useState([])
-    const [ads, setAds] = useState([]);
-    const [comments, setComments] = useState({});
-
 
   const getCategories = () => {
     try {
@@ -35,52 +32,23 @@ const Filter = ({
     setfilterInputValue(e.target.value);
   };
 
-  const getAds = () => {
-    axios.get("http://localhost:5000/api/ads").then((res) => setAds(res.data));
-  };
-
-  useEffect(() => {
-    getAds();
-  }, []);
-
   return (
     <div>
-      <form>
         <input
           type="text"
-          placeholder="keyword"
+          placeholder="Search"
           onChange={inputChange}
           value={filterInputValue}
         />
-        <label htmlFor="categories">Categories </label>
+        <label htmlFor="categories">Categorie: </label>
         <select id="categories" onChange={selectChange}>
-          <option value="all">All</option>
+          <option value="all">all</option>
           {categories.map((cate) => (
             <option key={cate.name} value={cate.name}>
               {cate.name}
             </option>
           ))}
         </select>
-        <button>Search</button>
-      </form>
-      <h4>Show</h4>
-      <button onClick={() => setfilterSelectValue("all")}>All</button>
-      {categories.map((cate) => (
-        <button key={cate.name} value={cate.name} onClick={selectChange}>
-          {cate.name}
-        </button>
-      ))}
-      <h2>Ads</h2>
-      {ads.map((ad) => (
-        <div key={ad.id}>
-          <h3>{ad.title}</h3>
-          <Comments
-            adId={ad.id}
-            comments={comments[ad.id]}
-            setComments={setComments}
-          />
-        </div>
-      ))}
     </div>
   );
 };
