@@ -5,14 +5,12 @@ import Login from "./Components/Login";
 import Navigation from "./Components/Navigation";
 import Registration from "./Components/Registration";
 import Admin from "./Components/Admin";
+import Ads from "./Components/Ads";
 
 function App() {
   const [filterSelectValue, setfilterSelectValue] = useState("all")
-  const [userRole, setUserRole] = useState(localStorage.getItem("userData")?JSON.parse(localStorage.getItem("userData")).role:"none")
   const [filterInputValue, setfilterInputValue] = useState("")
-
-  console.log(userRole);
-
+  const [userRole, setUserRole] = useState(localStorage.getItem("userData")?JSON.parse(localStorage.getItem("userData")).role:"none")
 
 
   return (
@@ -23,7 +21,8 @@ function App() {
           filterInputValue={filterInputValue} 
           setfilterInputValue={setfilterInputValue} 
           setfilterSelectValue={setfilterSelectValue}/>
-      {userRole==="simple"?<Admin/>:null}
+      {userRole==="admin"?<Admin/>:null}
+      <Ads filterSelectValue={filterSelectValue} filterInputValue={filterInputValue}/>
 
     </>
   );
