@@ -2,14 +2,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Comments from "./Comments";
 
+
 const Filter = ({
-  filterInputValue,
-  setfilterInputValue,
-  setfilterSelectValue,
+    filterInputValue,
+    setfilterInputValue,
+    setfilterSelectValue
 }) => {
-  const [categories, setcategories] = useState([]);
-  const [ads, setAds] = useState([]);
-  const [comments, setComments] = useState({});
+    const [categories, setcategories] = useState([])
+    const [ads, setAds] = useState([]);
+    const [comments, setComments] = useState({});
+
 
   const getCategories = () => {
     try {
@@ -83,4 +85,5 @@ const Filter = ({
   );
 };
 
-export default Filter;
+export default Filter
+
