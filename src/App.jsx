@@ -14,12 +14,17 @@ function App() {
   console.log(userRole);
 
 
+
   return (
     <>
       {/* <Registration /> */}
       <Navigation setUserRole={setUserRole}/>
-      <Filter filterInputValue={filterInputValue} setfilterInputValue={setfilterInputValue} setfilterSelectValue={setfilterSelectValue}/>
+      <Filter 
+          filterInputValue={filterInputValue} 
+          setfilterInputValue={setfilterInputValue} 
+          setfilterSelectValue={setfilterSelectValue}/>
       {userRole==="simple"?<Admin/>:null}
+
     </>
   );
 }
