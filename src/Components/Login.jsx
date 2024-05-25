@@ -27,7 +27,7 @@ function reducer(state, action) {
   }
 }
 
-const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole}) => {
+const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
   const [{ password, email }, dispatch] = useReducer(reducer, initialState);
 
   async function loginUser() {
@@ -39,10 +39,13 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole}) => {
 
       const { token, username, role } = res.data;
 
-      localStorage.setItem("userData", JSON.stringify({ token, username, role }));
-      setUserRole(role)
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ token, username, role })
+      );
+      setUserRole(role);
 
-      console.log(res.data);
+      console.log(res);
       handleLoginSuccess();
     } catch (error) {
       alert("There was an error loading data...");

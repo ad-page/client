@@ -6,7 +6,7 @@ import Registration from "./Registration";
 
 const BASE_URL = "http://localhost:5000/api/users";
 
-function Navigation({setUserRole}) {
+function Navigation({ setUserRole }) {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const [isOpenSignup, setIsOpenSignup] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,7 +37,7 @@ function Navigation({setUserRole}) {
 
   function handleLogout() {
     localStorage.removeItem("userData");
-    setUserRole("none")
+    setUserRole("none");
     setIsAuthenticated(false);
   }
 
@@ -68,7 +68,11 @@ function Navigation({setUserRole}) {
         />
       )}
       {isOpenSignup && (
-        <Registration closeModal={closeModal} BASE_URL={BASE_URL} setUserRole={setUserRole}/>
+        <Registration
+          closeModal={closeModal}
+          BASE_URL={BASE_URL}
+          setUserRole={setUserRole}
+        />
       )}
     </nav>
   );
