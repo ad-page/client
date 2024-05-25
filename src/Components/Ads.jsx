@@ -5,6 +5,7 @@ import Comments from './Comments';
 const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
     const [ads, setAds] = useState([]);
     const [comments, setComments] = useState({});
+    const userData = JSON.parse(localStorage.getItem("userData"))
     let adsCopy = ads
 
     const getAds = () => {
@@ -19,6 +20,12 @@ const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
     adsShowOrder==="low"?adsCopy.sort((a, b) => a.price - b.price):null
     adsShowOrder==="high"?adsCopy.sort((a, b) => b.price - a.price):null
 
+    const handleAdDelete = (id)=>{
+
+    }
+    const handleAdUpdate = (id)=>{
+
+    }
 
   return (
     <div>
@@ -28,6 +35,8 @@ const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
                 {adsCopy.map((ad) =>
                 filterInputValue===""?
                     <div key={ad._id} className='advert'>
+                        {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                        {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                         <div className='advert_images'>
                         {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                         </div>
@@ -45,6 +54,8 @@ const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
                     </div>
                 :ad.name.toLowerCase().includes(filterInputValue.toLowerCase())||ad.description.toLowerCase().includes(filterInputValue.toLowerCase())?
                     <div key={ad._id} className='advert'>
+                        {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                        {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                         <div className='advert_images'>
                         {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                         </div>
@@ -68,6 +79,8 @@ const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
                     filterInputValue===""?
                         ad.category.name===filterSelectValue?
                             <div key={ad._id} className='advert'>
+                                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                                 <div className='advert_images'>
                                 {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                                 </div>
@@ -87,6 +100,8 @@ const Ads = ({filterSelectValue, filterInputValue, adsShowOrder}) => {
                     :ad.name.toLowerCase().includes(filterInputValue.toLowerCase())||ad.description.toLowerCase().includes(filterInputValue.toLowerCase())?
                         ad.category.name===filterSelectValue?
                             <div key={ad._id} className='advert'>
+                                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                                 <div className='advert_images'>
                                 {ad.images.map((image)=><img key={image} src={image} style={{width:"100px"}}/>)}
                                 </div>
