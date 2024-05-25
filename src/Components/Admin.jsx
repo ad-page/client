@@ -4,22 +4,10 @@ import React, { useEffect, useState } from 'react'
 const Admin = () => {
     const [showCategories, setShowCategories] = useState(1)
     const [showUsers, setShowUsers] = useState(0)
-    const [allUsers, setAllUsers] = useState([])
     const [categories, setcategories] = useState([])
     const [newCategory, setNewCategory] = useState("")
     const userToken = JSON.parse(localStorage.getItem("userData")).token
 
-
-    // GET users
-    const getUsers = ()=>{
-        try {
-          axios
-            .get("http://localhost:5000/api/users/")
-            .then((res) => setAllUsers(res.data));
-        } catch (error) {
-          console.log(error);
-        } 
-    }
     // GET categoies
     const getCategories = () => {
         try {
@@ -34,23 +22,42 @@ const Admin = () => {
     const postCategories = (data) => {
         try {
           axios
-            .post("http://localhost:5000/api/categories", data)
+            .post("http://localhost:5000/api/categories", data,{
+            headers:{
+            Authorization: `Bearer ${userToken}`,
+            'Content-Type': 'application/json',}
+        })
         } catch (error) {
           console.log(error);
         }
       };
-    
       useEffect(() => {
         getCategories();
-        // getUsers()
       }, []);
 
-      const handleCategorySubmit= ()=>{
+      const deleteCategories = (id)=>{
+            try {
+              axios
+                .delete(`http://localhost:5000/api/categories/${id}`,{
+                headers:{
+                Authorization: `Bearer ${userToken}`,
+                'Content-Type': 'application/json',}
+            })
+            } catch (error) {
+              console.log(error);
+            }
+      }
+
+      const handleCategorySubmit= (ev)=>{
         const data = {name: newCategory}
         postCategories(data)
       }
       const handleCatInput =(el)=>{
             setNewCategory(el.target.value)
+      }
+      const handleCategoryDelete=(id)=>{
+        deleteCategories(id)
+        window.location.reload()
       }
 
 
@@ -64,7 +71,7 @@ const Admin = () => {
             <ol>
                 {categories.map((e)=><li key={e._id}>
                     <span>{e.name}</span>
-                    <button>Remove</button>
+                    <button type='submit' onClick={()=>handleCategoryDelete(e._id)}>Remove</button>
                 </li>)}
             </ol>
             <form onSubmit={handleCategorySubmit}>
