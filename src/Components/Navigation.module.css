@@ -6,6 +6,9 @@
   width: 100%;
   padding: 0 3rem;
   z-index: 100;
+  border-bottom: 1px solid #ddd;
+  background-color: #d7ffe9;
+  margin-bottom: 32px;
 }
 
 .navLogo {
