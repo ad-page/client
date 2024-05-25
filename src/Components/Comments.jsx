@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import styles from "./Comments.module.css";
 
-const Comments = ({ adId, comments, setComments }) => {
+const Comments = ({ adId, comments, setComments, className }) => {
   const [newComment, setNewComment] = useState("");
 
   const handleCommentChange = (e) => {
@@ -15,8 +16,8 @@ const Comments = ({ adId, comments, setComments }) => {
   };
 
   return (
-    <div>
-      <h5>Comments</h5>
+    <div className={className}>
+      <h5 className={styles.heading}>Comments</h5>
       <ul>
         {comments?.map((comment, index) => (
           <li key={index}>{comment.text}</li>
@@ -28,8 +29,11 @@ const Comments = ({ adId, comments, setComments }) => {
           value={newComment}
           onChange={handleCommentChange}
           placeholder="Add a comment"
+          className={styles.input}
         />
-        <button type="submit">Comment</button>
+        <button type="submit" className={styles.btn}>
+          Comment
+        </button>
       </form>
     </div>
   );
