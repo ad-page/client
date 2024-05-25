@@ -6,29 +6,40 @@ import Navigation from "./Components/Navigation";
 import Registration from "./Components/Registration";
 import Admin from "./Components/Admin";
 import Ads from "./Components/Ads";
+import AllUsers from "./Components/AllUsers";
+import Footer from "./Components/Footer";
 
 function App() {
-  const [filterSelectValue, setfilterSelectValue] = useState("all")
-  const [filterInputValue, setfilterInputValue] = useState("")
-  const [adsShowOrder, setAdsShowOrder] = useState("default")
-  const [userRole, setUserRole] = useState(localStorage.getItem("userData")?JSON.parse(localStorage.getItem("userData")).role:"none")
-
+  const [filterSelectValue, setfilterSelectValue] = useState("all");
+  const [filterInputValue, setfilterInputValue] = useState("");
+  const [adsShowOrder, setAdsShowOrder] = useState("default");
+  const [userRole, setUserRole] = useState(
+    localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData")).role
+      : "none"
+  );
 
   return (
     <>
       {/* <Registration /> */}
-      <Navigation setUserRole={setUserRole}/>
-      <Filter 
-          filterInputValue={filterInputValue} 
-          setfilterInputValue={setfilterInputValue} 
-          setfilterSelectValue={setfilterSelectValue}
-          setAdsShowOrder={setAdsShowOrder}/>
-      {userRole==="admin"?<Admin/>:null}
-      <Ads 
-          filterSelectValue={filterSelectValue} 
-          filterInputValue={filterInputValue}
-          adsShowOrder={adsShowOrder}/>
-
+      <Navigation setUserRole={setUserRole} />
+      <Filter
+        filterInputValue={filterInputValue}
+        setfilterInputValue={setfilterInputValue}
+        setfilterSelectValue={setfilterSelectValue}
+        setAdsShowOrder={setAdsShowOrder}
+      />
+      {userRole === "admin" ? (
+        <>
+          <Admin />
+        </>
+      ) : null}
+      <Ads
+        filterSelectValue={filterSelectValue}
+        filterInputValue={filterInputValue}
+        adsShowOrder={adsShowOrder}
+      />
+      <Footer />
     </>
   );
 }

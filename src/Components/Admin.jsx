@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import AllUsers from './AllUsers';
 
 const Admin = () => {
-    const [showCategories, setShowCategories] = useState(1)
+    const [showCategories, setShowCategories] = useState(0)
     const [showUsers, setShowUsers] = useState(0)
     const [categories, setcategories] = useState([])
     const [newCategory, setNewCategory] = useState("")
@@ -80,13 +81,9 @@ const Admin = () => {
             </form>
         </div>:null}
 
-        {showUsers===1?<div>
-            <ol>
-
-            </ol>
-        </div>:null}
+        {showUsers===1?<AllUsers />:null}
     </div>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;
