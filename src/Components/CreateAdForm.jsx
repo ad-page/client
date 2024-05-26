@@ -8,7 +8,7 @@ export const CreateAdForm = ({ setCreateAd }) => {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState('');
   const [categories, setCategories] = useState([]);
-  const [userId, setUserId] = useState(
+  const userId = useState(
     localStorage.getItem('userData')
       ? JSON.parse(localStorage.getItem('userData'))._id
       : 'none'
