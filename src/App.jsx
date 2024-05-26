@@ -21,31 +21,36 @@ function App() {
       ? JSON.parse(localStorage.getItem('userData')).role
       : 'none'
   );
-  const [createAd, setCreateAd] = useState('');
+  const [createAd, setCreateAd] = useState(null);
   console.log();
   useEffect(() => {
-    if (createAd === '') {
-      return;
-    }
+    if (!createAd) return;
+
     const userToken = localStorage.getItem('userData')
       ? JSON.parse(localStorage.getItem('userData')).token
       : 'none';
 
-    if (userToken === 'none') {
-      alert('login to Create Ad');
+    if (!userToken) {
+      alert('login to Create an Ad');
       return;
     }
 
-    try {
-      axios.post('http://localhost:5000/api/ads', createAd, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const postAd = async () => {
+      try {
+        await axios.post('http://localhost:5000/api/ads', createAd, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        alert('Ad created successfully');
+      } catch (error) {
+        console.error('Error creating ad:', error);
+        alert('Failed to create ad');
+      }
+    };
+
+    postAd();
   }, [createAd]);
 
   const postCategories = (data) => {
