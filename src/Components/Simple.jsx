@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { CreateAdForm } from './CreateAdForm';
 
 const Simple = ({ setCreateAd }) => {
-  const name = JSON.parse(localStorage.getItem('userData')).username;
   const [showCreateAd, setShowCreateAd] = useState(0);
   const [showMyAds, setShowMyAds] = useState(0);
   const [showFavorites, setShowFavorites] = useState(0);
   return (
     <div>
-      <h3>Welcome {name}</h3>
       <button
         onClick={() =>
           showCreateAd === 0 ? setShowCreateAd(1) : setShowCreateAd(0)
