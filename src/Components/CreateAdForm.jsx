@@ -19,6 +19,9 @@ export const CreateAdForm = ({ setCreateAd }) => {
       try {
         const res = await axios.get('http://localhost:5000/api/categories');
         setCategories(res.data);
+        if (res.data.length > 0) {
+          setCategory(res.data[0].name);
+        }
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
