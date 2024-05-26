@@ -22,8 +22,6 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
   const handleAdDelete = (id) => {
     const deleteAd = async () => {
       try {
-        console.log(userData);
-        console.log(id);
         await axios.delete(`http://localhost:5000/api/ads/${id}`, {
           headers: {
             Authorization: `Bearer ${userData.token}`,
