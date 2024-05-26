@@ -12,6 +12,7 @@
 .singleAd {
   display: flex;
   width: 100%;
+  position: relative;
 }
 
 .singleAd:not(:last-child) {
@@ -51,4 +52,24 @@
   position: absolute;
   right: 32px;
   top: 0;
+}
+
+.manageAdBtns {
+  display: flex;
+  gap: 12px;
+  position: absolute;
+  left: 16px;
+  top: 8px;
+}
+
+.manageAdBtns button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: transparent;
+  background-color: #ddddddb6;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

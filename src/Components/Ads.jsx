@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Comments from "./Comments";
 import styles from "./Ads.module.css";
+import Button from "./Button";
+import Message from "./Message";
 
 const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
-    const [ads, setAds] = useState([]);
-    const [comments, setComments] = useState({});
-    const userData = JSON.parse(localStorage.getItem("userData"))
-    let adsCopy = ads;
+  const [ads, setAds] = useState([]);
+  const [comments, setComments] = useState({});
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  let adsCopy = ads;
 
   const getAds = () => {
     axios.get("http://localhost:5000/api/ads").then((res) => setAds(res.data));
@@ -17,13 +19,8 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
     getAds();
   }, []);
 
-    const handleAdDelete = (id)=>{
-
-    }
-    const handleAdUpdate = (id)=>{
-
-    }
-
+  const handleAdDelete = (id) => {};
+  const handleAdUpdate = (id) => {};
 
   // sorting
   adsShowOrder === "low" ? adsCopy.sort((a, b) => a.price - b.price) : null;
@@ -37,17 +34,27 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
           {adsCopy.map((ad) =>
             filterInputValue === "" ? (
               <div key={ad._id} className={styles.singleAd}>
-                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
                   ))}
-
                 </div>
                 <div className={styles.adContent}>
                   <div>
                     <h2>{ad.name}</h2>
+                    <div className={styles.manageAdBtns}>
+                      {userData?._id === ad.user._id ? (
+                        <Button type="edit" onClick={() => handleAdUpdate}>
+                          &#9998;
+                        </Button>
+                      ) : null}
+                      {userData?._id === ad.user._id ||
+                      userData?.role === "admin" ? (
+                        <Button type="delete" onClick={() => handleAdDelete}>
+                          &times;
+                        </Button>
+                      ) : null}
+                    </div>
                     <p className={styles.price}>{ad.price}&euro;</p>
                     <p className={styles.category}>{ad.category.name}</p>
                     <p>{ad.description}</p>
@@ -67,8 +74,6 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                 .toLowerCase()
                 .includes(filterInputValue.toLowerCase()) ? (
               <div key={ad._id} className={styles.singleAd}>
-                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
@@ -83,6 +88,32 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                         filterInputValue.toUpperCase()
                       )}
                     </h2>
+                    <div className={styles.manageAdBtns}>
+                      {userData?._id === ad.user._id ? (
+                        <Button type="edit" onClick={() => handleAdUpdate}>
+                          &#9998;
+                        </Button>
+                      ) : null}
+                      {userData?._id === ad.user._id ||
+                      userData?.role === "admin" ? (
+                        <Button type="delete" onClick={() => handleAdDelete}>
+                          &times;
+                        </Button>
+                      ) : null}
+                    </div>
+                    <div className={styles.manageAdBtns}>
+                      {userData?._id === ad.user._id ? (
+                        <Button type="edit" onClick={() => handleAdUpdate}>
+                          &#9998;
+                        </Button>
+                      ) : null}
+                      {userData?._id === ad.user._id ||
+                      userData?.role === "admin" ? (
+                        <Button type="delete" onClick={() => handleAdDelete}>
+                          &times;
+                        </Button>
+                      ) : null}
+                    </div>
                     <p className={styles.price}>{ad.price}&euro;</p>
                     <p>
                       {ad.description.replace(
@@ -109,8 +140,6 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
             filterInputValue === "" ? (
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
-                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />
@@ -119,6 +148,19 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                   <div className={styles.adContent}>
                     <div>
                       <h2>{ad.name}</h2>
+                      <div className={styles.manageAdBtns}>
+                        {userData?._id === ad.user._id ? (
+                          <Button type="edit" onClick={() => handleAdUpdate}>
+                            &#9998;
+                          </Button>
+                        ) : null}
+                        {userData?._id === ad.user._id ||
+                        userData?.role === "admin" ? (
+                          <Button type="delete" onClick={() => handleAdDelete}>
+                            &times;
+                          </Button>
+                        ) : null}
+                      </div>
                       <p className={styles.price}>{ad.price}&euro;</p>
                       <p className={styles.category}>{ad.category.name}</p>
                       <p className={styles.description}>{ad.description}</p>
@@ -140,8 +182,6 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                 .includes(filterInputValue.toLowerCase()) ? (
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
-                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />
@@ -155,6 +195,19 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                           filterInputValue.toUpperCase()
                         )}
                       </h2>
+                      <div className={styles.manageAdBtns}>
+                        {userData?._id === ad.user._id ? (
+                          <Button type="edit" onClick={() => handleAdUpdate}>
+                            &#9998;
+                          </Button>
+                        ) : null}
+                        {userData?._id === ad.user._id ||
+                        userData?.role === "admin" ? (
+                          <Button type="delete" onClick={() => handleAdDelete}>
+                            &times;
+                          </Button>
+                        ) : null}
+                      </div>
                       <p className={styles.price}>{ad.price}&euro;</p>
                       <p className={styles.description}>
                         {ad.description.replace(

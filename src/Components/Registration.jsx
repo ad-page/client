@@ -147,16 +147,14 @@ const Registration = ({ closeModal, BASE_URL }) => {
           />
           <button className={styles.btn}>Register</button>
           {errorPassowrd && (
-            <Message
-              message="❌ Passwords do NOT match !"
-              style={{ color: "red" }}
-            />
+            <Message style={{ color: "red" }}>
+              ❌ Passwords do NOT match !
+            </Message>
           )}
           {existingUser && (
-            <Message
-              message="❌ User is already exists !"
-              style={{ color: "red" }}
-            />
+            <Message style={{ color: "red" }}>
+              ❌ User is already exists !
+            </Message>
           )}
         </form>
       </div>

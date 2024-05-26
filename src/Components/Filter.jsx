@@ -37,35 +37,42 @@ const Filter = ({
   };
 
   return (
-    <div className={styles.container}>
-      <div>
-        <input
-          type="text"
-          placeholder="Search"
-          onChange={inputChange}
-          value={filterInputValue}
-        />
-        <label htmlFor="categories">Categories: </label>
-        <select id="categories" onChange={selectChange}>
-          <option value="all">all</option>
-          {categories.map((cate) => (
-            <option key={cate.name} value={cate.name}>
-              {cate.name}
+    <>
+      <h1>
+        Welcome to the
+        <span className={styles.highlight}> AdVantage </span> page, create and
+        upload your ads completely for free !
+      </h1>
+      <div className={styles.container}>
+        <div>
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={inputChange}
+            value={filterInputValue}
+          />
+          <label htmlFor="categories">Categories: </label>
+          <select id="categories" onChange={selectChange}>
+            <option value="all">all</option>
+            {categories.map((cate) => (
+              <option key={cate.name} value={cate.name}>
+                {cate.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="sort">Price order: </label>
+          <select id="sort" onChange={sortSelectChange}>
+            <option value="default" disabled>
+              --Choose--
             </option>
-          ))}
-        </select>
+            <option value="low">Lower price</option>
+            <option value="high">Higher price</option>
+          </select>
+        </div>
       </div>
-      <div>
-        <label htmlFor="sort">Price order: </label>
-        <select id="sort" onChange={sortSelectChange}>
-          <option value="default" disabled>
-            --Choose--
-          </option>
-          <option value="low">Lower price</option>
-          <option value="high">Higher price</option>
-        </select>
-      </div>
-    </div>
+    </>
   );
 };
 
