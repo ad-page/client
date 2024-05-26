@@ -8,6 +8,7 @@ import Admin from "./Components/Admin";
 import Ads from "./Components/Ads";
 import AllUsers from "./Components/AllUsers";
 import Footer from "./Components/Footer";
+import Simple from "./Components/Simple";
 
 function App() {
   const [filterSelectValue, setfilterSelectValue] = useState("all");
@@ -32,6 +33,11 @@ function App() {
       {userRole === "admin" ? (
         <>
           <Admin />
+        </>
+      ) : null}
+      {userRole === "simple" ? (
+        <>
+          <Simple />
         </>
       ) : null}
       <Ads

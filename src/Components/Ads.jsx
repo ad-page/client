@@ -4,9 +4,10 @@ import Comments from "./Comments";
 import styles from "./Ads.module.css";
 
 const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
-  const [ads, setAds] = useState([]);
-  const [comments, setComments] = useState({});
-  let adsCopy = ads;
+    const [ads, setAds] = useState([]);
+    const [comments, setComments] = useState({});
+    const userData = JSON.parse(localStorage.getItem("userData"))
+    let adsCopy = ads;
 
   const getAds = () => {
     axios.get("http://localhost:5000/api/ads").then((res) => setAds(res.data));
@@ -15,6 +16,14 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
   useEffect(() => {
     getAds();
   }, []);
+
+    const handleAdDelete = (id)=>{
+
+    }
+    const handleAdUpdate = (id)=>{
+
+    }
+
 
   // sorting
   adsShowOrder === "low" ? adsCopy.sort((a, b) => a.price - b.price) : null;
@@ -28,10 +37,13 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
           {adsCopy.map((ad) =>
             filterInputValue === "" ? (
               <div key={ad._id} className={styles.singleAd}>
+                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
                   ))}
+
                 </div>
                 <div className={styles.adContent}>
                   <div>
@@ -55,6 +67,8 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                 .toLowerCase()
                 .includes(filterInputValue.toLowerCase()) ? (
               <div key={ad._id} className={styles.singleAd}>
+                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
@@ -95,6 +109,8 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
             filterInputValue === "" ? (
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
+                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />
@@ -124,6 +140,8 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                 .includes(filterInputValue.toLowerCase()) ? (
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
+                {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />

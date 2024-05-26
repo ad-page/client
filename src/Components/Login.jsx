@@ -37,11 +37,11 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
         password,
       });
 
-      const { token, username, role } = res.data;
+      const { token, username, role, _id } = res.data;
 
       localStorage.setItem(
         "userData",
-        JSON.stringify({ token, username, role })
+        JSON.stringify({ token, username, role, _id })
       );
       setUserRole(role);
 
