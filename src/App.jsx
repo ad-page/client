@@ -78,11 +78,17 @@ function App() {
       />
       {userRole === 'admin' ? (
         <>
+          <h3>
+            Welcome {JSON.parse(localStorage.getItem('userData')).username}
+          </h3>
           <Admin setCreateAd={setCreateAd} />
         </>
       ) : null}
       {userRole === 'simple' ? (
         <>
+          <h3>
+            Welcome {JSON.parse(localStorage.getItem('userData')).username}
+          </h3>
           <Simple setCreateAd={setCreateAd} />
         </>
       ) : null}

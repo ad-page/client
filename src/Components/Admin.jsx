@@ -1,21 +1,22 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import AllUsers from "./AllUsers";
-import Button from "./Button";
-import styles from "./Admin.module.css";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import AllUsers from './AllUsers';
+import Button from './Button';
+import styles from './Admin.module.css';
+import Simple from './Simple';
 
-const Admin = () => {
+const Admin = (setCreateAd) => {
   const [showCategories, setShowCategories] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
   const [categories, setcategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const userToken = JSON.parse(localStorage.getItem("userData")).token;
+  const [newCategory, setNewCategory] = useState('');
+  const userToken = JSON.parse(localStorage.getItem('userData')).token;
 
   // GET categoies
   const getCategories = () => {
     try {
       axios
-        .get("http://localhost:5000/api/categories")
+        .get('http://localhost:5000/api/categories')
         .then((res) => setcategories(res.data));
     } catch (error) {
       console.log(error);
@@ -24,10 +25,10 @@ const Admin = () => {
   //POST categories
   const postCategories = (data) => {
     try {
-      axios.post("http://localhost:5000/api/categories", data, {
+      axios.post('http://localhost:5000/api/categories', data, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
     } catch (error) {
@@ -43,7 +44,7 @@ const Admin = () => {
       axios.delete(`http://localhost:5000/api/categories/${id}`, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
     } catch (error) {
@@ -65,7 +66,6 @@ const Admin = () => {
 
   return (
     <div className={styles.container}>
-      <h3>Welcome Admin</h3>
       <h4>Manage:</h4>
       <Button
         onClick={() => (showUsers === 0 ? setShowUsers(1) : setShowUsers(0))}
@@ -106,6 +106,7 @@ const Admin = () => {
       ) : null}
 
       {showUsers === 1 ? <AllUsers /> : null}
+      <Simple setCreateAd={setCreateAd} />
     </div>
   );
 };
