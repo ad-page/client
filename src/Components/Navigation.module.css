@@ -41,3 +41,12 @@
 .btnSign:active {
   background-color: #4bbb7d;
 }
+
+.loggedUsername {
+  display: flex;
+  gap: 12px;
+}
+
+.loggedUsername h4 {
+  transform: translateY(25%);
+}

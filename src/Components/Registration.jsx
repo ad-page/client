@@ -2,12 +2,16 @@ import React, { useReducer, useState } from "react";
 import styles from "./Registration.module.css";
 import axios from "axios";
 import Message from "./Message";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Button from "./Button";
 
 const initialState = {
   username: "",
   email: "",
   password: "",
   password2: "",
+  showPassword: false,
+  showPassword2: false,
 };
 
 function reducer(state, action) {
@@ -41,6 +45,16 @@ function reducer(state, action) {
           passwordConfirm: false,
         };
       }
+    case "showedPassword":
+      return {
+        ...state,
+        showPassword: !state.showPassword,
+      };
+    case "showedPassword2":
+      return {
+        ...state,
+        showPassword2: !state.showPassword2,
+      };
     case "clearForm":
       return initialState;
     default:
@@ -48,11 +62,11 @@ function reducer(state, action) {
   }
 }
 
-const Registration = ({ closeModal, BASE_URL }) => {
-  const [{ username, password, password2, email }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+const Registration = ({ closeModal, BASE_URL, openLoginModal }) => {
+  const [
+    { username, password, password2, email, showPassword, showPassword2 },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const [errorPassowrd, setErrorPassword] = useState(false);
   const [existingUser, setExistingUser] = useState(false);
@@ -69,13 +83,10 @@ const Registration = ({ closeModal, BASE_URL }) => {
 
       console.log(res.data);
     } catch (error) {
-      // console.error(error);
       if (error.response && error.response.status === 400) {
         console.log("User exists");
         setExistingUser(true);
       }
-
-      // alert("There was an error loading data...");
     }
   }
 
@@ -117,6 +128,7 @@ const Registration = ({ closeModal, BASE_URL }) => {
         </h2>
         <form className={styles.modalForm}>
           <label className={styles.label}>Username</label>
+
           <input
             type="text"
             className={styles.input}
@@ -132,20 +144,32 @@ const Registration = ({ closeModal, BASE_URL }) => {
             onChange={handleEmail}
           />
           <label className={styles.label}>Password</label>
-          <input
-            type="password"
-            className={styles.input}
-            value={password}
-            onChange={handlePassword}
-          />
+          <div className={styles.inputContainer}>
+            <input
+              type={showPassword ? "text" : "password"}
+              className={`${styles.input} ${styles.icon}`}
+              value={password}
+              onChange={handlePassword}
+            />
+            <i onClick={() => dispatch({ type: "showedPassword" })}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </i>
+          </div>
+
           <label className={styles.label}>Repeat password</label>
-          <input
-            type="password"
-            className={styles.input}
-            value={password2}
-            onChange={handleConfirmPassword}
-          />
+          <div className={styles.inputContainer}>
+            <input
+              type={showPassword2 ? "text" : "password"}
+              className={`${styles.input} ${styles.icon}`}
+              value={password2}
+              onChange={handleConfirmPassword}
+            />
+            <i onClick={() => dispatch({ type: "showedPassword2" })}>
+              {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+            </i>
+          </div>
           <button className={styles.btn}>Register</button>
+
           {errorPassowrd && (
             <Message style={{ color: "red" }}>
               ❌ Passwords do NOT match !
@@ -157,6 +181,12 @@ const Registration = ({ closeModal, BASE_URL }) => {
             </Message>
           )}
         </form>
+        <div className={styles.alreadyUser}>
+          <p>Already user ?</p>
+          <Button onClick={openLoginModal} type="show">
+            Login
+          </Button>
+        </div>
       </div>
       <div className={styles.overlay}></div>
     </>

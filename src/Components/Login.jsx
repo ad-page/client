@@ -1,10 +1,12 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import styles from "./Login.module.css";
 import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const initialState = {
   email: "",
   password: "",
+  showPassword: false,
 };
 
 function reducer(state, action) {
@@ -22,13 +24,21 @@ function reducer(state, action) {
     case "loggedIn":
       console.log("Loggin in with", state.email, state.password);
       return initialState;
+    case "showedPassword":
+      return {
+        ...state,
+        showPassword: !state.showPassword,
+      };
     default:
       return initialState;
   }
 }
 
 const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
-  const [{ password, email }, dispatch] = useReducer(reducer, initialState);
+  const [{ password, email, showPassword }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   async function loginUser() {
     try {
@@ -88,12 +98,17 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
           />
 
           <label className={styles.label}>Password</label>
-          <input
-            type="password"
-            className={styles.input}
-            value={password}
-            onChange={handleChangePassword}
-          />
+          <div className={styles.inputContainer}>
+            <input
+              type={showPassword ? "text" : "password"}
+              className={styles.input}
+              value={password}
+              onChange={handleChangePassword}
+            />
+            <i onClick={() => dispatch({ type: "showedPassword" })}>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </i>
+          </div>
           <button className={styles.btn}>Login</button>
         </form>
       </div>

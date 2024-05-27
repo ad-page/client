@@ -80,9 +80,20 @@
 
 .input {
   font-size: 1rem;
-  padding: 12px;
+  padding: 12px 34px 12px 12px;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.inputContainer i {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
 }
 
 .label {
@@ -100,4 +111,12 @@
   backdrop-filter: blur(4px);
   z-index: 100;
   transition: all 0.5s;
+}
+
+.alreadyUser {
+  display: flex;
+  gap: 12px;
+  position: absolute;
+  right: 17%;
+  bottom: 12%;
 }

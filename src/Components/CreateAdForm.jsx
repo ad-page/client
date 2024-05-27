@@ -1,29 +1,29 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export const CreateAdForm = ({ setCreateAd }) => {
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [images, setImages] = useState('');
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [images, setImages] = useState("");
   const [categories, setCategories] = useState([]);
   const userId = useState(
-    localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData'))._id
-      : 'none'
+    localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData"))._id
+      : "none"
   );
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/categories');
+        const res = await axios.get("http://localhost:5000/api/categories");
         setCategories(res.data);
         if (res.data.length > 0) {
           setCategory(res.data[0].name);
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -41,7 +41,7 @@ export const CreateAdForm = ({ setCreateAd }) => {
       images: images,
     });
 
-    alert('new Ad created');
+    alert("new Ad created");
   };
 
   return (

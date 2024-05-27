@@ -101,3 +101,14 @@
   z-index: 100;
   transition: all 0.5s;
 }
+
+.inputContainer {
+  position: relative;
+}
+
+.inputContainer i {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+}

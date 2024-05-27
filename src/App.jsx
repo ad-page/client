@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import Filter from './Components/Filter';
-import Login from './Components/Login';
-import Navigation from './Components/Navigation';
-import Registration from './Components/Registration';
-import Admin from './Components/Admin';
-import Ads from './Components/Ads';
-import AllUsers from './Components/AllUsers';
-import Footer from './Components/Footer';
-import Simple from './Components/Simple';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import "./App.css";
+import Filter from "./Components/Filter";
+import Navigation from "./Components/Navigation";
+import Admin from "./Components/Admin";
+import Ads from "./Components/Ads";
+import Footer from "./Components/Footer";
+import Simple from "./Components/Simple";
+import axios from "axios";
+import UserAds from "./Components/UserAds";
 // import { create } from '../../server/models/categoryModel';
 
 function App() {
-  const [filterSelectValue, setfilterSelectValue] = useState('all');
-  const [filterInputValue, setfilterInputValue] = useState('');
-  const [adsShowOrder, setAdsShowOrder] = useState('default');
+  const [filterSelectValue, setfilterSelectValue] = useState("all");
+  const [filterInputValue, setfilterInputValue] = useState("");
+  const [adsShowOrder, setAdsShowOrder] = useState("default");
   const [userRole, setUserRole] = useState(
-    localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).role
-      : 'none'
+    localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData")).role
+      : "none"
   );
   const [createAd, setCreateAd] = useState(null);
   const [ads, setAds] = useState([]);
@@ -27,10 +25,10 @@ function App() {
   useEffect(() => {
     const getAds = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/ads');
+        const res = await axios.get("http://localhost:5000/api/ads");
         setAds(res.data);
       } catch (error) {
-        console.error('Error fetching ads:', error);
+        console.error("Error fetching ads:", error);
       }
     };
     getAds();
@@ -39,27 +37,27 @@ function App() {
   useEffect(() => {
     if (!createAd) return;
 
-    const userToken = localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).token
-      : 'none';
+    const userToken = localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData")).token
+      : "none";
 
     if (!userToken) {
-      alert('login to Create an Ad');
+      alert("login to Create an Ad");
       return;
     }
 
     const postAd = async () => {
       try {
-        await axios.post('http://localhost:5000/api/ads', createAd, {
+        await axios.post("http://localhost:5000/api/ads", createAd, {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
-        alert('Ad created successfully');
+        alert("Ad created successfully");
       } catch (error) {
-        console.error('Error creating ad:', error);
-        alert('Failed to create ad');
+        console.error("Error creating ad:", error);
+        alert("Failed to create ad");
       }
     };
 
@@ -67,44 +65,43 @@ function App() {
   }, [createAd]);
 
   const handleAdDelete = async (id) => {
-    const userToken = localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).token
-      : 'none';
+    const userToken = localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData")).token
+      : "none";
     if (!userToken) {
-      alert('login to delete Ad');
+      alert("login to delete Ad");
       return;
     }
     try {
       await axios.delete(`http://localhost:5000/api/ads/${id}`, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
-      alert('Ad deleted successfully');
+      alert("Ad deleted successfully");
       setCreateAd(null);
     } catch (error) {
-      console.error('Error deleting ad:', error);
-      alert('Failed to delete ad');
+      console.error("Error deleting ad:", error);
+      alert("Failed to delete ad");
     }
   };
 
-  const postCategories = (data) => {
-    try {
-      axios.post('http://localhost:5000/api/categories', data, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const postCategories = (data) => {
+  //   try {
+  //     axios.post("http://localhost:5000/api/categories", data, {
+  //       headers: {
+  //         Authorization: `Bearer ${userToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
-      {/* <Registration /> */}
       <Navigation setUserRole={setUserRole} />
       <Filter
         filterInputValue={filterInputValue}
@@ -112,18 +109,18 @@ function App() {
         setfilterSelectValue={setfilterSelectValue}
         setAdsShowOrder={setAdsShowOrder}
       />
-      {userRole === 'admin' ? (
+      {userRole === "admin" ? (
         <>
           <h3>
-            Welcome {JSON.parse(localStorage.getItem('userData')).username}
+            Welcome {JSON.parse(localStorage.getItem("userData")).username}
           </h3>
           <Admin setCreateAd={setCreateAd} />
         </>
       ) : null}
-      {userRole === 'simple' ? (
+      {userRole === "simple" ? (
         <>
           <h3>
-            Welcome {JSON.parse(localStorage.getItem('userData')).username}
+            Welcome {JSON.parse(localStorage.getItem("userData")).username}
           </h3>
           <Simple setCreateAd={setCreateAd} />
         </>
@@ -136,6 +133,7 @@ function App() {
         handleAdDelete={handleAdDelete}
       />
       <Footer />
+      <UserAds handleAdDelete={handleAdDelete} />
     </>
   );
 }
