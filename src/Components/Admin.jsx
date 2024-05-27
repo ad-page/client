@@ -5,7 +5,7 @@ import Button from './Button';
 import styles from './Admin.module.css';
 import Simple from './Simple';
 
-const Admin = (setCreateAd) => {
+const Admin = ({ setCreateAd }) => {
   const [showCategories, setShowCategories] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
   const [categories, setcategories] = useState([]);
