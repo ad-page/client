@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { CreateAdForm } from './CreateAdForm';
+import React, { useState } from "react";
+import { CreateAdForm } from "./CreateAdForm";
 
 const Simple = ({ setCreateAd }) => {
   const [showCreateAd, setShowCreateAd] = useState(0);

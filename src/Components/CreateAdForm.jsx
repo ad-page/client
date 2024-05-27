@@ -44,7 +44,7 @@ export const CreateAdForm = ({ setCreateAd }) => {
           dispatch({ type: 'SET_CATEGORY', payload: res.data[0].name });
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
@@ -62,7 +62,7 @@ export const CreateAdForm = ({ setCreateAd }) => {
       images: state.images,
     });
 
-    alert('new Ad created');
+    alert("new Ad created");
   };
 
   return (

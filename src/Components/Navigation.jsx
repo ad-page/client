@@ -10,19 +10,23 @@ function Navigation({ setUserRole }) {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const [isOpenSignup, setIsOpenSignup] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData && userData.token) {
       setIsAuthenticated(true);
+      setUsername(userData.username);
     }
   }, []);
 
   function openLoginModal() {
     setIsOpenLogin(true);
+    setIsOpenSignup(false);
   }
   function openSignupModal() {
     setIsOpenSignup(true);
+    setIsOpenLogin(false);
   }
 
   function closeModal() {
@@ -54,9 +58,12 @@ function Navigation({ setUserRole }) {
           </button>
         </div>
       ) : (
-        <button className={styles.btnSign} onClick={handleLogout}>
-          Logout
-        </button>
+        <div className={styles.loggedUsername}>
+          <h4>Welcome, {username}</h4>
+          <button className={styles.btnSign} onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       )}
 
       {isOpenLogin && (
@@ -72,6 +79,7 @@ function Navigation({ setUserRole }) {
           closeModal={closeModal}
           BASE_URL={BASE_URL}
           setUserRole={setUserRole}
+          openLoginModal={openLoginModal}
         />
       )}
     </nav>
