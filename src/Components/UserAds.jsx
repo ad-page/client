@@ -1,11 +1,11 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import Button from "./Button";
-import Comments from "./Comments";
-import styles from "./UserAds.module.css";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import Button from './Button';
+import Comments from './Comments';
+import styles from './UserAds.module.css';
 
-const BASE_URL = "http://localhost:5000/api/ads";
+const BASE_URL = 'http://localhost:5000/api/ads';
 
 const UserAds = ({ comments, setComments, handleAdDelete }) => {
   const [ads, setAds] = useState([]);
@@ -16,11 +16,11 @@ const UserAds = ({ comments, setComments, handleAdDelete }) => {
     const fetchAds = async () => {
       setIsLoading(true);
       try {
-        const userData = JSON.parse(localStorage.getItem("userData"));
+        const userData = JSON.parse(localStorage.getItem('userData'));
         const token = userData?.token;
 
         if (!token) {
-          throw new Error("No token");
+          throw new Error('No token');
         }
 
         const config = {
@@ -45,7 +45,7 @@ const UserAds = ({ comments, setComments, handleAdDelete }) => {
 
   const handleAdUpdate = (id) => {};
 
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
   console.log(userData);
 
   return (
@@ -69,7 +69,7 @@ const UserAds = ({ comments, setComments, handleAdDelete }) => {
                     </Button>
                   )}
                   {(userData._id === ad.user._id ||
-                    userData.role === "admin") && (
+                    userData.role === 'admin') && (
                     <Button
                       type="delete"
                       onClick={() => handleAdDelete(ad._id)}
@@ -88,7 +88,7 @@ const UserAds = ({ comments, setComments, handleAdDelete }) => {
 
                 <p>
                   Likes <FaHeart className={styles.liked} />:
-                  <span> {ad.likes.length}</span>
+                  {/* <span> {ad.likes.length}</span> */}
                 </p>
                 <p>
                   Comments: <span>{ad.comments.length}</span>
