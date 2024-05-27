@@ -22,7 +22,20 @@ function App() {
       : 'none'
   );
   const [createAd, setCreateAd] = useState(null);
-  console.log();
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    const getAds = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/ads');
+        setAds(res.data);
+      } catch (error) {
+        console.error('Error fetching ads:', error);
+      }
+    };
+    getAds();
+  }, [createAd]);
+
   useEffect(() => {
     if (!createAd) return;
 
@@ -52,6 +65,29 @@ function App() {
 
     postAd();
   }, [createAd]);
+
+  const handleAdDelete = async (id) => {
+    const userToken = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).token
+      : 'none';
+    if (!userToken) {
+      alert('login to delete Ad');
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:5000/api/ads/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      alert('Ad deleted successfully');
+      setCreateAd(null);
+    } catch (error) {
+      console.error('Error deleting ad:', error);
+      alert('Failed to delete ad');
+    }
+  };
 
   const postCategories = (data) => {
     try {
@@ -93,9 +129,11 @@ function App() {
         </>
       ) : null}
       <Ads
+        ads={ads}
         filterSelectValue={filterSelectValue}
         filterInputValue={filterInputValue}
         adsShowOrder={adsShowOrder}
+        handleAdDelete={handleAdDelete}
       />
       <Footer />
     </>
