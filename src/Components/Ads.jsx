@@ -38,7 +38,7 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
             filterInputValue === "" ? (
               <div key={ad._id} className={styles.singleAd}>
                 {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete(ad._id)}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
@@ -68,24 +68,23 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                 .includes(filterInputValue.toLowerCase()) ? (
               <div key={ad._id} className={styles.singleAd}>
                 {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete(ad._id)}>Delete</button>:null}
                 <div className={styles.imgContainer}>
                   {ad.images.map((image) => (
                     <img key={image} src={image} className={styles.adImage} />
                   ))}
                 </div>
-                {console.log(<span>{filterInputValue}</span>)}
                 <div className={styles.adContent}>
                   <div>
                     <h2>
-                      {ad.name.replace(
+                      {ad.name.toLowerCase().replace(
                         filterInputValue,
                         filterInputValue.toUpperCase()
                       )}
                     </h2>
                     <p className={styles.price}>{ad.price}&euro;</p>
                     <p>
-                      {ad.description.replace(
+                      {ad.description.toLowerCase().replace(
                         filterInputValue,
                         filterInputValue.toUpperCase()
                       )}
@@ -110,7 +109,7 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
                 {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete(ad._id)}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />
@@ -141,7 +140,7 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
               ad.category.name === filterSelectValue ? (
                 <div key={ad._id} className={styles.singleAd}>
                 {userData?._id===ad.user._id?<button onClick={()=>handleAdUpdate}>Update</button>:null}
-                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete}>Delete</button>:null}
+                {userData?._id===ad.user._id||userData?.role==="admin"?<button onClick={()=>handleAdDelete(ad._id)}>Delete</button>:null}
                   <div className={styles.imgContainer}>
                     {ad.images.map((image) => (
                       <img key={image} src={image} className={styles.adImage} />
@@ -150,14 +149,14 @@ const Ads = ({ filterSelectValue, filterInputValue, adsShowOrder }) => {
                   <div className={styles.adContent}>
                     <div>
                       <h2>
-                        {ad.name.replace(
+                        {ad.name.toLowerCase().replace(
                           filterInputValue,
                           filterInputValue.toUpperCase()
                         )}
                       </h2>
                       <p className={styles.price}>{ad.price}&euro;</p>
                       <p className={styles.description}>
-                        {ad.description.replace(
+                        {ad.description.toLowerCase().replace(
                           filterInputValue,
                           filterInputValue.toUpperCase()
                         )}
