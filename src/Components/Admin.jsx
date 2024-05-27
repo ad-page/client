@@ -8,7 +8,7 @@ import Simple from './Simple';
 const Admin = ({ setCreateAd }) => {
   const [showCategories, setShowCategories] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
-  const [categories, setcategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
   const userToken = JSON.parse(localStorage.getItem('userData')).token;
 
@@ -17,7 +17,7 @@ const Admin = ({ setCreateAd }) => {
     try {
       axios
         .get('http://localhost:5000/api/categories')
-        .then((res) => setcategories(res.data));
+        .then((res) => setCategories(res.data));
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +30,7 @@ const Admin = ({ setCreateAd }) => {
           Authorization: `Bearer ${userToken}`,
           'Content-Type': 'application/json',
         },
-      });
+      }).then((res)=>getCategories());
     } catch (error) {
       console.log(error);
     }
@@ -46,36 +46,37 @@ const Admin = ({ setCreateAd }) => {
           Authorization: `Bearer ${userToken}`,
           'Content-Type': 'application/json',
         },
-      });
+      }).then((res)=>getCategories());
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleCategorySubmit = (ev) => {
+    ev.preventDefault()
     const data = { name: newCategory };
     postCategories(data);
+    setNewCategory("")
   };
   const handleCatInput = (el) => {
     setNewCategory(el.target.value);
   };
   const handleCategoryDelete = (id) => {
     deleteCategories(id);
-    window.location.reload();
   };
 
   return (
     <div className={styles.container}>
       <h4>Manage:</h4>
       <Button
-        onClick={() => (showUsers === 0 ? setShowUsers(1) : setShowUsers(0))}
+        onClick={() => (showUsers === 0 ? (setShowUsers(1),setShowCategories(0)) : setShowUsers(0))}
         type="show"
       >
         Users
       </Button>
       <Button
         onClick={() =>
-          showCategories === 0 ? setShowCategories(1) : setShowCategories(0)
+          showCategories === 0 ? (setShowCategories(1),setShowUsers(0)) : setShowCategories(0)
         }
         type="show"
       >
@@ -97,7 +98,7 @@ const Admin = ({ setCreateAd }) => {
             ))}
           </ol>
           <form onSubmit={handleCategorySubmit}>
-            <input type="text" value={newCategory} onChange={handleCatInput} />
+            <input type="text" value={newCategory} onChange={handleCatInput} required/>
             <Button type="submit" className={styles.categoriesBtn}>
               Add new
             </Button>
