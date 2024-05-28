@@ -44,7 +44,7 @@ export const CreateAdForm = ({ setCreateAd }) => {
           dispatch({ type: 'SET_CATEGORY', payload: res.data[0].name });
         }
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error('Error fetching categories:', error);
       }
     };
 
@@ -53,16 +53,19 @@ export const CreateAdForm = ({ setCreateAd }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const uniqueId =
+      Date.now().toString(16) + Math.random().toString(16).substring(2, 14);
     setCreateAd({
+      _id: uniqueId,
       name: state.name,
       category: state.category,
       price: state.price,
       description: state.description,
       user: state.userId,
-      images: state.images,
+      images: [state.images],
     });
 
-    alert("new Ad created");
+    alert('new Ad created');
   };
 
   return (
