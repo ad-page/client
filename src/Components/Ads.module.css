@@ -70,7 +70,7 @@
   background-color: #ffb545;
   text-align: center;
   border-radius: 16px;
-  width: 80px;
+  min-width: 80px;
 }
 
 .author {
