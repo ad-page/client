@@ -1,9 +1,8 @@
-import axios from "axios";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import Comments from "./Comments";
 import styles from "./Ads.module.css";
 import Button from "./Button";
+import Likes from "./Likes";
 
 const Ads = ({
   filterSelectValue,
@@ -13,51 +12,7 @@ const Ads = ({
   handleAdDelete,
 }) => {
   const [comments, setComments] = useState({});
-  const [likedAds, setLikedAds] = useState({});
-
-  useEffect(() => {
-    // Load liked ads from local storage
-    const storedLikedAds = JSON.parse(localStorage.getItem("likedAds"));
-    if (storedLikedAds) {
-      setLikedAds(storedLikedAds);
-    }
-  }, []);
-
-  const handleLike = async (adId) => {
-    const newLikedAds = { ...likedAds };
-
-    if (newLikedAds[adId]) {
-      delete newLikedAds[adId];
-    } else {
-      newLikedAds[adId] = true;
-    }
-
-    setLikedAds(newLikedAds);
-    localStorage.setItem("likedAds", JSON.stringify(newLikedAds));
-
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const token = userData?.token;
-
-      if (!token) {
-        throw new Error("No token");
-      }
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      await axios.post(
-        `http://localhost:5000/api/ads/${adId}/like`,
-        {},
-        config
-      );
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  // const [likedAds, setLikedAds] = useState({});
 
   // console.log(key);
 
@@ -76,7 +31,7 @@ const Ads = ({
   // }
 
   const userData = JSON.parse(localStorage.getItem("userData")) || {};
-  const userId = userData._id;
+  // const userId = userData._id;
   let adsCopy = [...ads];
 
   // sorting
@@ -112,17 +67,7 @@ const Ads = ({
               {ad.images.map((image) => (
                 <img key={image} src={image} className={styles.adImage} />
               ))}
-              {userData.token ? (
-                <i onClick={() => handleLike(ad._id)}>
-                  {likedAds[ad._id] && likedAds[ad._id][userId] ? (
-                    <FaHeart className={styles.liked} />
-                  ) : (
-                    <FaRegHeart className={styles.unliked} />
-                  )}
-                  {/* {key === ad._id ? <FaHeart /> : <FaRegHeart />} */}
-                </i>
-              ) : null}
-
+              <Likes userData={userData} ad={ad} className={styles} />
               {/* </div> */}
               <div className={styles.adContent}>
                 <div>
