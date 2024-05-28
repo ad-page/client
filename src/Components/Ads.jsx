@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Comments from "./Comments";
-import styles from "./Ads.module.css";
-import Button from "./Button";
-import Likes from "./Likes";
+import React, { useEffect, useState } from 'react';
+import Comments from './Comments';
+import styles from './Ads.module.css';
+import Button from './Button';
+import Likes from './Likes';
 
 const Ads = ({
   filterSelectValue,
@@ -12,6 +12,33 @@ const Ads = ({
   handleAdDelete,
 }) => {
   const [comments, setComments] = useState({});
+  const [filteredAds, setFilteredAds] = useState([]);
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
+
+  useEffect(() => {
+    const filterAndSort = () => {
+      let adsCopy = [...ads];
+      // Sorting
+      if (adsShowOrder === 'low') {
+        adsCopy.sort((a, b) => a.price - b.price);
+      } else if (adsShowOrder === 'high') {
+        adsCopy.sort((a, b) => b.price - a.price);
+      }
+
+      // Filtering based on input value and category selection
+      return adsCopy.filter((ad) => {
+        const matchesCategory =
+          filterSelectValue === 'all' || ad.category.name === filterSelectValue;
+        const matchesInput =
+          ad.name.toLowerCase().includes(filterInputValue.toLowerCase()) ||
+          ad.description.toLowerCase().includes(filterInputValue.toLowerCase());
+        return matchesCategory && matchesInput;
+      });
+    };
+
+    setFilteredAds(filterAndSort());
+  }, [ads, filterSelectValue, filterInputValue, adsShowOrder]);
+
   // const [likedAds, setLikedAds] = useState({});
 
   // console.log(key);
@@ -30,26 +57,7 @@ const Ads = ({
   //   }
   // }
 
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
-  // const userId = userData._id;
-  let adsCopy = [...ads];
-
-  // sorting
-  if (adsShowOrder === "low") {
-    adsCopy.sort((a, b) => a.price - b.price);
-  } else if (adsShowOrder === "high") {
-    adsCopy.sort((a, b) => b.price - a.price);
-  }
-
-  // Filtering based on input value and category selection
-  const filteredAds = adsCopy.filter((ad) => {
-    const matchesCategory =
-      filterSelectValue === "all" || ad.category.name === filterSelectValue;
-    const matchesInput =
-      ad.name.toLowerCase().includes(filterInputValue.toLowerCase()) ||
-      ad.description.toLowerCase().includes(filterInputValue.toLowerCase());
-    return matchesCategory && matchesInput;
-  });
+  // const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   const handleAdUpdate = (id) => {};
 
@@ -82,7 +90,7 @@ const Ads = ({
                       </Button>
                     )}
                     {(userData._id === ad.user._id ||
-                      userData.role === "admin") && (
+                      userData.role === 'admin') && (
                       <Button
                         type="delete"
                         onClick={() => handleAdDelete(ad._id)}

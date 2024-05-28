@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styles from "./Comments.module.css";
+import React, { useState } from 'react';
+import styles from './Comments.module.css';
 
 const Comments = ({ adId, comments, setComments, className }) => {
-  const [newComment, setNewComment] = useState("");
+  const [newComment, setNewComment] = useState('');
 
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
@@ -12,7 +12,7 @@ const Comments = ({ adId, comments, setComments, className }) => {
     e.preventDefault();
     const newCommentObj = { text: newComment, adId };
     setComments((prevComments) => [...prevComments, newCommentObj]);
-    setNewComment("");
+    setNewComment('');
   };
 
   return (
