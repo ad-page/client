@@ -1,9 +1,8 @@
-import axios from "axios";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import Comments from "./Comments";
 import styles from "./Ads.module.css";
 import Button from "./Button";
+import Likes from "./Likes";
 
 const Ads = ({
   filterSelectValue,
@@ -13,13 +12,26 @@ const Ads = ({
   handleAdDelete,
 }) => {
   const [comments, setComments] = useState({});
-  const [click, setClick] = useState(false);
+  // const [likedAds, setLikedAds] = useState({});
 
-  function handleLike() {
-    setClick((prev) => !prev);
-  }
+  // console.log(key);
+
+  // async function handleLikes() {
+  //   try {
+  //     const res = await axios.post(
+  //       `http://localhost:5000/api/ads/6655a8b6fb8d4d7987ac9eac/like`
+  //     );
+
+  //     console.log(res.data);
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 400) {
+  //       console.log("User exists");
+  //     }
+  //   }
+  // }
 
   const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  // const userId = userData._id;
   let adsCopy = [...ads];
 
   // sorting
@@ -41,55 +53,57 @@ const Ads = ({
 
   const handleAdUpdate = (id) => {};
 
+  console.log(userData);
+
   return (
     <div className={styles.container}>
       <h2>{filterSelectValue} Ads</h2>
       <div className={styles.adContainer}>
         {filteredAds.map((ad) => (
-          <div key={ad._id} className={styles.singleAd}>
-            {/* <div className={styles.imgContainer}> */}
-            {ad.images.map((image) => (
-              <img key={image} src={image} className={styles.adImage} />
-            ))}
-            <i onClick={handleLike}>
-              {click ? (
-                <FaHeart className={styles.liked} />
-              ) : (
-                <FaRegHeart className={styles.unliked} />
-              )}
-            </i>
-            {/* </div> */}
-            <div className={styles.adContent}>
-              <div>
-                <h2>{ad.name}</h2>
-                <div className={styles.manageAdBtns}>
-                  {userData._id === ad.user._id && (
-                    <Button type="edit" onClick={() => handleAdUpdate(ad._id)}>
-                      &#9998;
-                    </Button>
-                  )}
-                  {(userData._id === ad.user._id ||
-                    userData.role === "admin") && (
-                    <Button
-                      type="delete"
-                      onClick={() => handleAdDelete(ad._id)}
-                    >
-                      &times;
-                    </Button>
-                  )}
-                </div>
-                <p className={styles.price}>{ad.price}&euro;</p>
-                <p className={styles.category}>{ad.category.name}</p>
+          <>
+            {/* {console.log(ad)} */}
+            <div key={ad._id} className={styles.singleAd}>
+              {/* <div className={styles.imgContainer}> */}
+              {ad.images.map((image) => (
+                <img key={image} src={image} className={styles.adImage} />
+              ))}
+              <Likes userData={userData} ad={ad} className={styles} />
+              {/* </div> */}
+              <div className={styles.adContent}>
+                <div>
+                  <h2>{ad.name}</h2>
+                  <div className={styles.manageAdBtns}>
+                    {userData._id === ad.user._id && (
+                      <Button
+                        type="edit"
+                        onClick={() => handleAdUpdate(ad._id)}
+                      >
+                        &#9998;
+                      </Button>
+                    )}
+                    {(userData._id === ad.user._id ||
+                      userData.role === "admin") && (
+                      <Button
+                        type="delete"
+                        onClick={() => handleAdDelete(ad._id)}
+                      >
+                        &times;
+                      </Button>
+                    )}
+                  </div>
+                  <p className={styles.price}>{ad.price}&euro;</p>
+                  <p className={styles.category}>{ad.category.name}</p>
 
-                <p>{ad.description}</p>
+                  <p>{ad.description}</p>
+                </div>
+                <Comments
+                  adId={ad._id}
+                  comments={comments[ad._id]}
+                  setComments={setComments}
+                />
               </div>
-              <Comments
-                adId={ad._id}
-                comments={comments[ad._id]}
-                setComments={setComments}
-              />
             </div>
-          </div>
+          </>
         ))}
       </div>
     </div>
