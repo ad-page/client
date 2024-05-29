@@ -9,7 +9,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 40rem;
+  max-width: 50rem;
   background-color: #f3f3f3;
   padding: 5rem 6rem;
   box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
@@ -41,7 +41,7 @@
 
 .highlight::after {
   display: block;
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;

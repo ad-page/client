@@ -1,7 +1,6 @@
-import { useReducer, useEffect, useState } from 'react';
+import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import styles from './Login.module.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import styles from './Modals.module.css';
 
 const initialFormState = {
   name: '',
