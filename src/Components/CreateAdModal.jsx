@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './Login.module.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -34,7 +34,7 @@ const formReducer = (state, action) => {
   }
 };
 
-export const CreateAdModal = ({ setCreateAd, setIsCreateAdModalOpen }) => {
+export const CreateAdModal = ({ setAds, setIsCreateAdModalOpen }) => {
   const [state, dispatch] = useReducer(formReducer, initialFormState);
 
   useEffect(() => {
@@ -55,14 +55,41 @@ export const CreateAdModal = ({ setCreateAd, setIsCreateAdModalOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCreateAd({
-      name: state.name,
-      category: state.category,
-      price: state.price,
-      description: state.description,
-      user: state.userId,
-      images: [state.images],
-    });
+    const userToken = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).token
+      : 'none';
+    if (!userToken) {
+      alert('login to Create an Ad');
+      return;
+    }
+    const postAd = async () => {
+      try {
+        await axios.post(
+          'http://localhost:5000/api/ads',
+          {
+            name: state.name,
+            category: state.category,
+            price: state.price,
+            description: state.description,
+            user: state.userId,
+            images: [state.images],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        alert('Ad created successfully');
+        const res = await axios.get('http://localhost:5000/api/ads');
+        setAds(res.data);
+      } catch (error) {
+        console.error('Error creating ad:', error);
+        alert('Failed to create ad');
+      }
+    };
+    postAd();
     setIsCreateAdModalOpen(false);
   };
 

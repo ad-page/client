@@ -19,7 +19,7 @@ function App() {
       ? JSON.parse(localStorage.getItem('userData')).role
       : 'none'
   );
-  const [createAd, setCreateAd] = useState(null);
+
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
@@ -33,35 +33,6 @@ function App() {
     };
     getAds();
   }, []);
-
-  useEffect(() => {
-    if (!createAd) return;
-
-    const userToken = localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).token
-      : 'none';
-    if (!userToken) {
-      alert('login to Create an Ad');
-      return;
-    }
-    const postAd = async () => {
-      try {
-        await axios.post('http://localhost:5000/api/ads', createAd, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        alert('Ad created successfully');
-        const res = await axios.get('http://localhost:5000/api/ads');
-        setAds(res.data);
-      } catch (error) {
-        console.error('Error creating ad:', error);
-        alert('Failed to create ad');
-      }
-    };
-    postAd();
-  }, [createAd]);
 
   const handleAdDelete = async (id) => {
     const userToken = localStorage.getItem('userData')
@@ -113,7 +84,7 @@ function App() {
           <h3>
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
-          <Admin setCreateAd={setCreateAd} />
+          <Admin setAds={setAds} />
         </>
       ) : null}
       {userRole === 'simple' ? (
@@ -121,11 +92,12 @@ function App() {
           <h3>
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
-          <Simple setCreateAd={setCreateAd} />
+          <Simple setAds={setAds} />
         </>
       ) : null}
       <Ads
         ads={ads}
+        setAds={setAds}
         filterSelectValue={filterSelectValue}
         filterInputValue={filterInputValue}
         adsShowOrder={adsShowOrder}

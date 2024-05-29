@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CreateAdModal } from './CreateAdModal';
 
-const Simple = ({ setCreateAd }) => {
+const Simple = ({ setAds }) => {
   const [isCreateAdModalOpen, setIsCreateAdModalOpen] = useState(false);
   const [showMyAds, setShowMyAds] = useState(0);
   const [showFavorites, setShowFavorites] = useState(0);
@@ -20,12 +20,12 @@ const Simple = ({ setCreateAd }) => {
       >
         favorites
       </button>
-      {isCreateAdModalOpen === true ? (
+      {isCreateAdModalOpen && (
         <CreateAdModal
-          setCreateAd={setCreateAd}
+          setAds={setAds}
           setIsCreateAdModalOpen={setIsCreateAdModalOpen}
         />
-      ) : null}
+      )}
       {showMyAds === 1 ? <div>here goes my ads component</div> : null}
       {showFavorites === 1 ? <div>here goes favorites component</div> : null}
     </div>
