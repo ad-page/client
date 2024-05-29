@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import Filter from "./Filter";
-import Navigation from "../Header/Navigation";
-import Admin from "./Admin";
-import Ads from "./Ads";
-import Footer from "../Footer/Footer";
-import Simple from "./Simple";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import Filter from './Filter';
+import Navigation from '../Header/Navigation';
+import Admin from './Admin';
+import Ads from './Ads';
+import Footer from '../Footer/Footer';
+import Simple from './Simple';
+import axios from 'axios';
 
 function App() {
-  const [filterSelectValue, setfilterSelectValue] = useState("all");
-  const [filterInputValue, setfilterInputValue] = useState("");
-  const [adsShowOrder, setAdsShowOrder] = useState("default");
+  const [filterSelectValue, setfilterSelectValue] = useState('all');
+  const [filterInputValue, setfilterInputValue] = useState('');
+  const [adsShowOrder, setAdsShowOrder] = useState('default');
   const [userRole, setUserRole] = useState(
-    localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData")).role
-      : "none"
+    localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).role
+      : 'none'
   );
 
   const [ads, setAds] = useState([]);
@@ -24,10 +24,10 @@ function App() {
   useEffect(() => {
     const getAds = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/ads");
+        const res = await axios.get('http://localhost:5000/api/ads');
         setAds(res.data);
       } catch (error) {
-        console.error("Error fetching ads:", error);
+        console.error('Error fetching ads:', error);
       }
     };
     getAds();
@@ -42,10 +42,10 @@ function App() {
         setfilterSelectValue={setfilterSelectValue}
         setAdsShowOrder={setAdsShowOrder}
       />
-      {userRole === "admin" ? (
+      {userRole === 'admin' ? (
         <>
           <h3>
-            Welcome {JSON.parse(localStorage.getItem("userData")).username}
+            Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
             <Admin
@@ -56,10 +56,10 @@ function App() {
           </div>
         </>
       ) : null}
-      {userRole === "simple" ? (
+      {userRole === 'simple' ? (
         <>
           <h3>
-            Welcome {JSON.parse(localStorage.getItem("userData")).username}
+            Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
             <Simple
