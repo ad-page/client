@@ -10,14 +10,29 @@ const Ads = ({
   adsShowOrder,
   ads,
   handleAdDelete,
+  setAds,
+  showMyFavorites,
+  showMyAds,
 }) => {
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const userData = JSON.parse(localStorage.getItem('userData')) || {};
+  // const [likedAds, setLikedAds] = useState({});
 
   useEffect(() => {
     const filterAndSort = () => {
       let adsCopy = [...ads];
+
+      if (showMyFavorites) {
+        adsCopy = adsCopy.filter((ad) =>
+          ad.likes.filter((user) => user === userData._id)
+        );
+      }
+
+      if (showMyAds) {
+        adsCopy = adsCopy.filter((ad) => ad.user._id === userData._id);
+      }
+
       // Sorting
       if (adsShowOrder === 'low') {
         adsCopy.sort((a, b) => a.price - b.price);
@@ -37,27 +52,7 @@ const Ads = ({
     };
 
     setFilteredAds(filterAndSort());
-  }, [ads, filterSelectValue, filterInputValue, adsShowOrder]);
-
-  // const [likedAds, setLikedAds] = useState({});
-
-  // console.log(key);
-
-  // async function handleLikes() {
-  //   try {
-  //     const res = await axios.post(
-  //       `http://localhost:5000/api/ads/6655a8b6fb8d4d7987ac9eac/like`
-  //     );
-
-  //     console.log(res.data);
-  //   } catch (error) {
-  //     if (error.response && error.response.status === 400) {
-  //       console.log("User exists");
-  //     }
-  //   }
-  // }
-
-  // const userData = JSON.parse(localStorage.getItem('userData')) || {};
+  }, [ads, filterSelectValue, filterInputValue, adsShowOrder, showMyAds]);
 
   const handleAdUpdate = (id) => {};
 

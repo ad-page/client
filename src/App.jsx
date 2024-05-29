@@ -20,6 +20,8 @@ function App() {
   );
 
   const [ads, setAds] = useState([]);
+  const [showMyAds, setShowMyAds] = useState(false);
+  const [showMyFavorites, setShowMyFavorites] = useState(false);
 
   useEffect(() => {
     const getAds = async () => {
@@ -81,7 +83,11 @@ function App() {
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
-            <Simple setAds={setAds} />
+            <Simple
+              setAds={setAds}
+              setShowMyAds={setShowMyAds}
+              setShowMyFavorites={setShowMyFavorites}
+            />
           </div>
         </>
       ) : null}
@@ -92,6 +98,8 @@ function App() {
         filterInputValue={filterInputValue}
         adsShowOrder={adsShowOrder}
         handleAdDelete={handleAdDelete}
+        showMyAds={showMyAds}
+        showMyFavorites={showMyFavorites}
       />
       <Footer />
       <UserAds handleAdDelete={handleAdDelete} />
