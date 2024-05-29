@@ -20,6 +20,8 @@ function App() {
   );
 
   const [ads, setAds] = useState([]);
+  const [showMyAds, setShowMyAds] = useState(false);
+  const [showMyFavorites, setShowMyFavorites] = useState(false);
 
   useEffect(() => {
     const getAds = async () => {
@@ -32,29 +34,6 @@ function App() {
     };
     getAds();
   }, []);
-
-  const handleAdDelete = async (id) => {
-    const userToken = localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).token
-      : 'none';
-    if (!userToken) {
-      alert('login to delete Ad');
-      return;
-    }
-    try {
-      await axios.delete(`http://localhost:5000/api/ads/${id}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      alert('Ad deleted successfully');
-      setAds((prevAds) => prevAds.filter((ad) => ad._id !== id));
-    } catch (error) {
-      console.error('Error deleting ad:', error);
-      alert('Failed to delete ad');
-    }
-  };
 
   return (
     <>
@@ -81,7 +60,11 @@ function App() {
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
-            <Simple setAds={setAds} />
+            <Simple
+              setAds={setAds}
+              setShowMyAds={setShowMyAds}
+              setShowMyFavorites={setShowMyFavorites}
+            />
           </div>
         </>
       ) : null}
@@ -91,10 +74,11 @@ function App() {
         filterSelectValue={filterSelectValue}
         filterInputValue={filterInputValue}
         adsShowOrder={adsShowOrder}
-        handleAdDelete={handleAdDelete}
+        showMyAds={showMyAds}
+        showMyFavorites={showMyFavorites}
       />
       <Footer />
-      <UserAds handleAdDelete={handleAdDelete} />
+      <UserAds />
     </>
   );
 }
