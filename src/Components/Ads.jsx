@@ -61,15 +61,12 @@ const Ads = ({
 
   const handleAdUpdate = (id) => {};
 
-  console.log(userData);
-
   return (
     <div className={styles.container}>
       <h2>{filterSelectValue} Ads</h2>
       <div className={styles.adContainer}>
         {filteredAds.map((ad) => (
           <>
-            {/* {console.log(ad)} */}
             <div key={ad._id} className={styles.singleAd}>
               {/* <div className={styles.imgContainer}> */}
               {ad.images.map((image) => (
