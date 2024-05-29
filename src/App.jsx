@@ -53,7 +53,8 @@ function App() {
           },
         });
         alert('Ad created successfully');
-        setAds((prevAds) => [...prevAds, createAd]);
+        const res = await axios.get('http://localhost:5000/api/ads');
+        setAds(res.data);
       } catch (error) {
         console.error('Error creating ad:', error);
         alert('Failed to create ad');
