@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreateAdModal } from './CreateAdModal';
+import { CreateAdModal } from './Modals/CreateAdModal';
 import Button from './Button';
 
 const Simple = ({ setAds, setShowMyAds, setShowMyFavorites }) => {

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import Login from "./Login";
-import styles from "./Navigation.module.css";
-import logo from "../assets/Screenshot_2024-05-22_132736-removebg-preview.png";
-import Registration from "./Registration";
+import React, { useEffect, useState } from 'react';
+import Login from './Modals/Login';
+import styles from './Navigation.module.css';
+import logo from '../assets/Screenshot_2024-05-22_132736-removebg-preview.png';
+import Registration from './Modals/Registration';
 
-const BASE_URL = "http://localhost:5000/api/users";
+const BASE_URL = 'http://localhost:5000/api/users';
 
 function Navigation({ setUserRole }) {
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const [isOpenSignup, setIsOpenSignup] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userData"));
+    const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData && userData.token) {
       setIsAuthenticated(true);
       setUsername(userData.username);
@@ -40,8 +40,8 @@ function Navigation({ setUserRole }) {
   }
 
   function handleLogout() {
-    localStorage.removeItem("userData");
-    setUserRole("none");
+    localStorage.removeItem('userData');
+    setUserRole('none');
     setIsAuthenticated(false);
   }
 

@@ -1,30 +1,30 @@
-import React, { useReducer } from "react";
-import styles from "./Login.module.css";
-import axios from "axios";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React, { useReducer } from 'react';
+import styles from './Modals.module.css';
+import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const initialState = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
   showPassword: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "setEmail":
+    case 'setEmail':
       return {
         ...state,
         email: action.payload,
       };
-    case "setPassword":
+    case 'setPassword':
       return {
         ...state,
         password: action.payload,
       };
-    case "loggedIn":
-      console.log("Loggin in with", state.email, state.password);
+    case 'loggedIn':
+      console.log('Loggin in with', state.email, state.password);
       return initialState;
-    case "showedPassword":
+    case 'showedPassword':
       return {
         ...state,
         showPassword: !state.showPassword,
@@ -50,7 +50,7 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
       const { token, username, role, _id } = res.data;
 
       localStorage.setItem(
-        "userData",
+        'userData',
         JSON.stringify({ token, username, role, _id })
       );
       setUserRole(role);
@@ -58,22 +58,22 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
       console.log(res);
       handleLoginSuccess();
     } catch (error) {
-      alert("There was an error loading data...");
+      alert('There was an error loading data...');
       console.error(error);
     }
   }
 
   function handleChangeEmail(e) {
-    dispatch({ type: "setEmail", payload: e.target.value });
+    dispatch({ type: 'setEmail', payload: e.target.value });
   }
   function handleChangePassword(e) {
-    dispatch({ type: "setPassword", payload: e.target.value });
+    dispatch({ type: 'setPassword', payload: e.target.value });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     loginUser();
-    dispatch({ type: "loggedIn" });
+    dispatch({ type: 'loggedIn' });
     closeModal();
   }
 
@@ -100,12 +100,12 @@ const Login = ({ closeModal, BASE_URL, handleLoginSuccess, setUserRole }) => {
           <label className={styles.label}>Password</label>
           <div className={styles.inputContainer}>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               className={styles.input}
               value={password}
               onChange={handleChangePassword}
             />
-            <i onClick={() => dispatch({ type: "showedPassword" })}>
+            <i onClick={() => dispatch({ type: 'showedPassword' })}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </i>
           </div>
