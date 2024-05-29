@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Comments from "./Comments";
+import Comments from "./SmallerComponents/Comments";
 import styles from "./Filter.module.css";
 
 const Filter = ({
