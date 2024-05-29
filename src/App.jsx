@@ -8,7 +8,6 @@ import Footer from './Components/Footer';
 import Simple from './Components/Simple';
 import axios from 'axios';
 import UserAds from './Components/UserAds';
-// import { create } from '../../server/models/categoryModel';
 
 function App() {
   const [filterSelectValue, setfilterSelectValue] = useState('all');
@@ -57,19 +56,6 @@ function App() {
     }
   };
 
-  // const postCategories = (data) => {
-  //   try {
-  //     axios.post("http://localhost:5000/api/categories", data, {
-  //       headers: {
-  //         Authorization: `Bearer ${userToken}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
     <>
       <Navigation setUserRole={setUserRole} />
@@ -84,7 +70,9 @@ function App() {
           <h3>
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
-          <Admin setAds={setAds} />
+          <div className="manageContainer">
+            <Admin setAds={setAds} />
+          </div>
         </>
       ) : null}
       {userRole === 'simple' ? (
@@ -92,7 +80,9 @@ function App() {
           <h3>
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
-          <Simple setAds={setAds} />
+          <div className="manageContainer">
+            <Simple setAds={setAds} />
+          </div>
         </>
       ) : null}
       <Ads
