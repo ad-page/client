@@ -5,7 +5,7 @@ import Button from './Button';
 import styles from './Admin.module.css';
 import Simple from './Simple';
 
-const Admin = ({ setAds }) => {
+const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
   const [showCategories, setShowCategories] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
   const [categories, setCategories] = useState([]);
@@ -122,7 +122,11 @@ const Admin = ({ setAds }) => {
       ) : null}
 
       {showUsers === 1 ? <AllUsers /> : null}
-      <Simple setAds={setAds} />
+      <Simple
+        setAds={setAds}
+        setShowMyAds={setShowMyAds}
+        setShowMyFavorites={setShowMyFavorites}
+      />
     </div>
   );
 };

@@ -50,7 +50,11 @@ function App() {
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
-            <Admin setAds={setAds} />
+            <Admin
+              setAds={setAds}
+              setShowMyAds={setShowMyAds}
+              setShowMyFavorites={setShowMyFavorites}
+            />
           </div>
         </>
       ) : null}
