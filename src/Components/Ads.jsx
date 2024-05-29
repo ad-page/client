@@ -3,13 +3,13 @@ import Comments from './Comments';
 import styles from './Ads.module.css';
 import Button from './Button';
 import Likes from './Likes';
+import axios from 'axios';
 
 const Ads = ({
   filterSelectValue,
   filterInputValue,
   adsShowOrder,
   ads,
-  handleAdDelete,
   setAds,
   showMyFavorites,
   showMyAds,
@@ -55,6 +55,29 @@ const Ads = ({
   }, [ads, filterSelectValue, filterInputValue, adsShowOrder, showMyAds]);
 
   const handleAdUpdate = (id) => {};
+
+  const handleAdDelete = async (id) => {
+    const userToken = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).token
+      : 'none';
+    if (!userToken) {
+      alert('login to delete Ad');
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:5000/api/ads/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      alert('Ad deleted successfully');
+      setAds((prevAds) => prevAds.filter((ad) => ad._id !== id));
+    } catch (error) {
+      console.error('Error deleting ad:', error);
+      alert('Failed to delete ad');
+    }
+  };
 
   return (
     <div className={styles.container}>
