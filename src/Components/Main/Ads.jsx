@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Comments from "./SmallerComponents/Comments";
-import styles from "./Ads.module.css";
-import Button from "./SmallerComponents/Button";
-import Likes from "./SmallerComponents/Likes";
-import axios from "axios";
-import { FaHeart } from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import Comments from './SmallerComponents/Comments';
+import styles from './Ads.module.css';
+import Button from './SmallerComponents/Button';
+import Likes from './SmallerComponents/Likes';
+import axios from 'axios';
+import { FaHeart } from 'react-icons/fa';
 
 const Ads = ({
   filterSelectValue,
@@ -18,7 +18,7 @@ const Ads = ({
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   useEffect(() => {
     const fetchLikedAds = async () => {
@@ -30,12 +30,12 @@ const Ads = ({
             },
           };
           const response = await axios.get(
-            "http://localhost:5000/api/ads/liked",
+            'http://localhost:5000/api/ads/liked',
             config
           );
           setLikedAds(response.data);
         } catch (error) {
-          console.error("Error fetching liked ads:", error);
+          console.error('Error fetching liked ads:', error);
         }
       }
     };
@@ -49,7 +49,7 @@ const Ads = ({
 
       if (showMyFavorites) {
         adsCopy = adsCopy.filter((ad) =>
-          ad.likes.filter((user) => user === userData._id)
+          ad.likes.some((user) => user === userData._id)
         );
       }
 
@@ -58,16 +58,16 @@ const Ads = ({
       }
 
       // Sorting
-      if (adsShowOrder === "low") {
+      if (adsShowOrder === 'low') {
         adsCopy.sort((a, b) => a.price - b.price);
-      } else if (adsShowOrder === "high") {
+      } else if (adsShowOrder === 'high') {
         adsCopy.sort((a, b) => b.price - a.price);
       }
 
       // Filtering based on input value and category selection
       return adsCopy.filter((ad) => {
         const matchesCategory =
-          filterSelectValue === "all" || ad.category.name === filterSelectValue;
+          filterSelectValue === 'all' || ad.category.name === filterSelectValue;
         const matchesInput =
           ad.name.toLowerCase().includes(filterInputValue.toLowerCase()) ||
           ad.description.toLowerCase().includes(filterInputValue.toLowerCase());
@@ -76,30 +76,37 @@ const Ads = ({
     };
 
     setFilteredAds(filterAndSort());
-  }, [ads, filterSelectValue, filterInputValue, adsShowOrder, showMyAds]);
+  }, [
+    ads,
+    filterSelectValue,
+    filterInputValue,
+    adsShowOrder,
+    showMyAds,
+    showMyFavorites,
+  ]);
 
   const handleAdUpdate = (id) => {};
 
   const handleAdDelete = async (id) => {
-    const userToken = localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData")).token
-      : "none";
+    const userToken = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).token
+      : 'none';
     if (!userToken) {
-      alert("login to delete Ad");
+      alert('login to delete Ad');
       return;
     }
     try {
       await axios.delete(`http://localhost:5000/api/ads/${id}`, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
-      alert("Ad deleted successfully");
+      alert('Ad deleted successfully');
       setAds((prevAds) => prevAds.filter((ad) => ad._id !== id));
     } catch (error) {
-      console.error("Error deleting ad:", error);
-      alert("Failed to delete ad");
+      console.error('Error deleting ad:', error);
+      alert('Failed to delete ad');
     }
   };
 
@@ -128,7 +135,7 @@ const Ads = ({
                     </Button>
                   )}
                   {(userData._id === ad.user._id ||
-                    userData.role === "admin") && (
+                    userData.role === 'admin') && (
                     <Button
                       type="delete"
                       onClick={() => handleAdDelete(ad._id)}
