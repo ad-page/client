@@ -1,37 +1,37 @@
-import React, { useReducer, useState } from 'react';
-import styles from './Registration.module.css';
-import axios from 'axios';
-import Message from '../Message';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import Button from '../Button';
+import React, { useReducer, useState } from "react";
+import styles from "./Registration.module.css";
+import axios from "axios";
+import Message from "../Main/SmallerComponents/Message";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Button from "../Main/SmallerComponents/Button";
 
 const initialState = {
-  username: '',
-  email: '',
-  password: '',
-  password2: '',
+  username: "",
+  email: "",
+  password: "",
+  password2: "",
   showPassword: false,
   showPassword2: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'setUsername':
+    case "setUsername":
       return {
         ...state,
         username: action.payload,
       };
-    case 'setEmail':
+    case "setEmail":
       return {
         ...state,
         email: action.payload,
       };
-    case 'setPassword':
+    case "setPassword":
       return {
         ...state,
         password: action.payload,
       };
-    case 'confirmPassword':
+    case "confirmPassword":
       if (action.payload === state.password) {
         return {
           ...state,
@@ -45,17 +45,17 @@ function reducer(state, action) {
           passwordConfirm: false,
         };
       }
-    case 'showedPassword':
+    case "showedPassword":
       return {
         ...state,
         showPassword: !state.showPassword,
       };
-    case 'showedPassword2':
+    case "showedPassword2":
       return {
         ...state,
         showPassword2: !state.showPassword2,
       };
-    case 'clearForm':
+    case "clearForm":
       return initialState;
     default:
       return state;
@@ -79,29 +79,29 @@ const Registration = ({ closeModal, BASE_URL, openLoginModal }) => {
         password,
       });
 
-      dispatch({ type: 'clearForm' });
+      dispatch({ type: "clearForm" });
 
       console.log(res.data);
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.log('User exists');
+        console.log("User exists");
         setExistingUser(true);
       }
     }
   }
 
   function handleUsername(e) {
-    dispatch({ type: 'setUsername', payload: e.target.value });
+    dispatch({ type: "setUsername", payload: e.target.value });
   }
   function handleEmail(e) {
-    dispatch({ type: 'setEmail', payload: e.target.value });
+    dispatch({ type: "setEmail", payload: e.target.value });
     setExistingUser(false);
   }
   function handlePassword(e) {
-    dispatch({ type: 'setPassword', payload: e.target.value });
+    dispatch({ type: "setPassword", payload: e.target.value });
   }
   function handleConfirmPassword(e) {
-    dispatch({ type: 'confirmPassword', payload: e.target.value });
+    dispatch({ type: "confirmPassword", payload: e.target.value });
   }
 
   const handleSubmit = (e) => {
@@ -146,12 +146,12 @@ const Registration = ({ closeModal, BASE_URL, openLoginModal }) => {
           <label className={styles.label}>Password</label>
           <div className={styles.inputContainer}>
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               className={`${styles.input} ${styles.icon}`}
               value={password}
               onChange={handlePassword}
             />
-            <i onClick={() => dispatch({ type: 'showedPassword' })}>
+            <i onClick={() => dispatch({ type: "showedPassword" })}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </i>
           </div>
@@ -159,24 +159,24 @@ const Registration = ({ closeModal, BASE_URL, openLoginModal }) => {
           <label className={styles.label}>Repeat password</label>
           <div className={styles.inputContainer}>
             <input
-              type={showPassword2 ? 'text' : 'password'}
+              type={showPassword2 ? "text" : "password"}
               className={`${styles.input} ${styles.icon}`}
               value={password2}
               onChange={handleConfirmPassword}
             />
-            <i onClick={() => dispatch({ type: 'showedPassword2' })}>
+            <i onClick={() => dispatch({ type: "showedPassword2" })}>
               {showPassword2 ? <FaEyeSlash /> : <FaEye />}
             </i>
           </div>
           <button className={styles.btn}>Register</button>
 
           {errorPassowrd && (
-            <Message style={{ color: 'red' }}>
+            <Message style={{ color: "red" }}>
               ❌ Passwords do NOT match !
             </Message>
           )}
           {existingUser && (
-            <Message style={{ color: 'red' }}>
+            <Message style={{ color: "red" }}>
               ❌ User is already exists !
             </Message>
           )}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Button from "./Button";
-import Spinner from "./Spinner";
+import Button from "./SmallerComponents/Button";
+import Spinner from "./SmallerComponents/Spinner";
 
 const BASE_URL = "http://localhost:5000/api/users";
 

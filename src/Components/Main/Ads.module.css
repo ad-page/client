@@ -100,3 +100,21 @@
   justify-content: center;
   align-items: center;
 }
+
+.overallNum {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.overallNum p {
+  color: #999;
+  font-size: 14px;
+}
+
+.overallNum span {
+  font-weight: 500;
+  color: #48981b;
+}
+.likeNum {
+  color: #ffb545;
+}
