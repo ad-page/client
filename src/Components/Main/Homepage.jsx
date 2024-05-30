@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 import Simple from "./Simple";
 import axios from "axios";
 
-function App({ children }) {
+function App() {
   const [filterSelectValue, setfilterSelectValue] = useState("all");
   const [filterInputValue, setfilterInputValue] = useState("");
   const [adsShowOrder, setAdsShowOrder] = useState("default");
@@ -70,7 +70,15 @@ function App({ children }) {
           </div>
         </>
       ) : null}
-      {children}
+      <Ads
+        ads={ads}
+        setAds={setAds}
+        filterSelectValue={filterSelectValue}
+        filterInputValue={filterInputValue}
+        adsShowOrder={adsShowOrder}
+        showMyAds={showMyAds}
+        showMyFavorites={showMyFavorites}
+      />
       <Footer />
     </>
   );
