@@ -27,12 +27,6 @@
   transform: translateY(-5px);
 }
 
-.noAds {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .unliked,
 .liked {
   width: 32px;

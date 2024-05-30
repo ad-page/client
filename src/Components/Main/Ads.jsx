@@ -121,7 +121,7 @@ const Ads = ({
     <div className={styles.container}>
       <div className={styles.adContainer}>
         {filteredAds.length === 0 ? (
-          <h2 className="noAds">No Ads To Show</h2>
+          <h2>No Ads To Show</h2>
         ) : (
           filteredAds.map((ad) => (
             <div key={ad._id} className={styles.singleAd}>
