@@ -1,22 +1,22 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import AllUsers from "./AllUsers";
-import Button from "./SmallerComponents/Button";
-import styles from "./Admin.module.css";
-import Simple from "./Simple";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import AllUsers from './AllUsers';
+import Button from './SmallerComponents/Button';
+import styles from './Admin.module.css';
+import Simple from './Simple';
 
 const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
   const [showCategories, setShowCategories] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const userToken = JSON.parse(localStorage.getItem("userData")).token;
+  const [newCategory, setNewCategory] = useState('');
+  const userToken = JSON.parse(localStorage.getItem('userData')).token;
 
   // GET categoies
   const getCategories = () => {
     try {
       axios
-        .get("http://localhost:5000/api/categories")
+        .get('http://localhost:5000/api/categories')
         .then((res) => setCategories(res.data));
     } catch (error) {
       console.log(error);
@@ -26,10 +26,10 @@ const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
   const postCategories = (data) => {
     try {
       axios
-        .post("http://localhost:5000/api/categories", data, {
+        .post('http://localhost:5000/api/categories', data, {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         })
         .then((res) => getCategories());
@@ -47,7 +47,7 @@ const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
         .delete(`http://localhost:5000/api/categories/${id}`, {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         })
         .then((res) => getCategories());
@@ -60,7 +60,7 @@ const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
     ev.preventDefault();
     const data = { name: newCategory };
     postCategories(data);
-    setNewCategory("");
+    setNewCategory('');
   };
   const handleCatInput = (el) => {
     setNewCategory(el.target.value);
@@ -71,7 +71,6 @@ const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
 
   return (
     <div className={styles.container}>
-      <h4>Manage:</h4>
       <Button
         onClick={() =>
           showUsers === 0

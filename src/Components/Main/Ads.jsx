@@ -112,7 +112,6 @@ const Ads = ({
 
   return (
     <div className={styles.container}>
-      <h2>{filterSelectValue} Ads</h2>
       <div className={styles.adContainer}>
         {filteredAds.map((ad) => (
           <div key={ad._id} className={styles.singleAd}>
