@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { CreateAdModal } from "./CreateAdModal";
-import Button from "./SmallerComponents/Button";
+import React, { useState } from 'react';
+import { CreateAdModal } from './CreateAdModal';
+import Button from './SmallerComponents/Button';
 
 const Simple = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
   const [isCreateAdModalOpen, setIsCreateAdModalOpen] = useState(false);
@@ -18,10 +18,22 @@ const Simple = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
       <Button type="show" onClick={() => setIsCreateAdModalOpen(true)}>
         Create Ad
       </Button>
-      <Button type="show" onClick={() => setShowMyAds(true)}>
+      <Button
+        type="show"
+        onClick={() => {
+          setShowMyFavorites(false);
+          setShowMyAds(true);
+        }}
+      >
         my Ads
       </Button>
-      <Button type="show" onClick={() => setShowMyFavorites(true)}>
+      <Button
+        type="show"
+        onClick={() => {
+          setShowMyAds(false);
+          setShowMyFavorites(true);
+        }}
+      >
         My Favorites
       </Button>
       {isCreateAdModalOpen && (
