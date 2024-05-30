@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Comments from "./SmallerComponents/Comments";
 import styles from "./Ads.module.css";
 import Button from "./SmallerComponents/Button";
@@ -18,7 +18,9 @@ const Ads = ({
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  const userData = useMemo(() => {
+    return JSON.parse(localStorage.getItem("userData")) || {};
+  }, []);
 
   useEffect(() => {
     const fetchLikedAds = async () => {
