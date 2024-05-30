@@ -5,6 +5,7 @@ import Button from './SmallerComponents/Button';
 import Likes from './SmallerComponents/Likes';
 import axios from 'axios';
 import { FaHeart } from 'react-icons/fa';
+import { EditAdModal } from './EditAdModal';
 
 const Ads = ({
   filterSelectValue,
@@ -18,6 +19,8 @@ const Ads = ({
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [adToEdit, setAdToEdit] = useState(null);
   const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const Ads = ({
     };
 
     fetchLikedAds();
-  }, [userData]);
+  }, []);
 
   useEffect(() => {
     const filterAndSort = () => {
@@ -85,7 +88,11 @@ const Ads = ({
     showMyFavorites,
   ]);
 
-  const handleAdUpdate = (id) => {};
+  const handleAdUpdate = (id) => {
+    setIsEditModalOpen(true);
+    const findAdToEdit = ads.find((adToEdit) => adToEdit._id === id);
+    setAdToEdit(findAdToEdit);
+  };
 
   const handleAdDelete = async (id) => {
     const userToken = localStorage.getItem('userData')
@@ -129,7 +136,12 @@ const Ads = ({
                 <h2>{ad.name}</h2>
                 <div className={styles.manageAdBtns}>
                   {userData._id === ad.user._id && (
-                    <Button type="edit" onClick={() => handleAdUpdate(ad._id)}>
+                    <Button
+                      type="edit"
+                      onClick={() => {
+                        handleAdUpdate(ad._id);
+                      }}
+                    >
                       &#9998;
                     </Button>
                   )}
@@ -170,6 +182,13 @@ const Ads = ({
           </div>
         ))}
       </div>
+      {isEditModalOpen && (
+        <EditAdModal
+          setIsEditModalOpen={setIsEditModalOpen}
+          adToEdit={adToEdit}
+          setAds={setAds}
+        />
+      )}
     </div>
   );
 };
