@@ -120,67 +120,71 @@ const Ads = ({
   return (
     <div className={styles.container}>
       <div className={styles.adContainer}>
-        {filteredAds.map((ad) => (
-          <div key={ad._id} className={styles.singleAd}>
-            {ad.images.map((image) => (
-              <img key={image} src={image} className={styles.adImage} />
-            ))}
-            <Likes
-              userData={userData}
-              ad={ad}
-              likedAds={likedAds}
-              setLikedAds={setLikedAds}
-            />
-            <div className={styles.adContent}>
-              <div>
-                <h2>{ad.name}</h2>
-                <div className={styles.manageAdBtns}>
-                  {userData._id === ad.user._id && (
-                    <Button
-                      type="edit"
-                      onClick={() => {
-                        handleAdUpdate(ad._id);
-                      }}
-                    >
-                      &#9998;
-                    </Button>
-                  )}
-                  {(userData._id === ad.user._id ||
-                    userData.role === 'admin') && (
-                    <Button
-                      type="delete"
-                      onClick={() => handleAdDelete(ad._id)}
-                    >
-                      &times;
-                    </Button>
-                  )}
-                </div>
-                <p className={styles.price}>{ad.price}&euro;</p>
-                <p className={styles.category}>{ad.category.name}</p>
+        {filteredAds.length === 0 ? (
+          <h2 className="noAds">No Ads To Show</h2>
+        ) : (
+          filteredAds.map((ad) => (
+            <div key={ad._id} className={styles.singleAd}>
+              {ad.images.map((image) => (
+                <img key={image} src={image} className={styles.adImage} />
+              ))}
+              <Likes
+                userData={userData}
+                ad={ad}
+                likedAds={likedAds}
+                setLikedAds={setLikedAds}
+              />
+              <div className={styles.adContent}>
+                <div>
+                  <h2>{ad.name}</h2>
+                  <div className={styles.manageAdBtns}>
+                    {userData._id === ad.user._id && (
+                      <Button
+                        type="edit"
+                        onClick={() => {
+                          handleAdUpdate(ad._id);
+                        }}
+                      >
+                        &#9998;
+                      </Button>
+                    )}
+                    {(userData._id === ad.user._id ||
+                      userData.role === 'admin') && (
+                      <Button
+                        type="delete"
+                        onClick={() => handleAdDelete(ad._id)}
+                      >
+                        &times;
+                      </Button>
+                    )}
+                  </div>
+                  <p className={styles.price}>{ad.price}&euro;</p>
+                  <p className={styles.category}>{ad.category.name}</p>
 
-                <p>{ad.description}</p>
+                  <p>{ad.description}</p>
+                </div>
+
+                {showMyAds ? (
+                  <div className={styles.overallNum}>
+                    <p>
+                      Likes <FaHeart className={styles.likeNum} />:
+                      <span> {ad.likes.length}</span>
+                    </p>
+                    <p>
+                      Comments: <span>{ad.comments.length}</span>
+                    </p>
+                  </div>
+                ) : (
+                  <Comments
+                    adId={ad._id}
+                    comments={comments[ad._id]}
+                    setComments={setComments}
+                  />
+                )}
               </div>
-
-              {showMyAds ? (
-                <div className={styles.overallNum}>
-                  <p>
-                    Likes <FaHeart className={styles.likeNum} />:
-                    <span> {ad.likes.length}</span>
-                  </p>
-                  <p>
-                    Comments: <span>{ad.comments.length}</span>
-                  </p>
-                </div>
-              ) : (
-                <Comments
-                  adId={ad._id}
-                  comments={comments[ad._id]}
-                  setComments={setComments}
-                />
-              )}
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       {isEditModalOpen && (
         <EditAdModal
