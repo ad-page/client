@@ -1,10 +1,10 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../Header/Modals.module.css';
+import styles from '../../Header/Modals.module.css';
 
-const initialEditState = {
+const initialFormState = {
   name: '',
-  category: {},
+  category: '',
   price: '',
   description: '',
   images: '',
@@ -14,7 +14,7 @@ const initialEditState = {
     : 'none',
 };
 
-const editAdReducer = (state, action) => {
+const formReducer = (state, action) => {
   switch (action.type) {
     case 'SET_NAME':
       return { ...state, name: action.payload };
@@ -28,89 +28,68 @@ const editAdReducer = (state, action) => {
       return { ...state, images: action.payload };
     case 'SET_CATEGORIES':
       return { ...state, categories: action.payload };
-    case 'SET_INITIAL_STATE':
-      return { ...state, ...action.payload };
     default:
       return state;
   }
 };
 
-export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
-  const [state, dispatch] = useReducer(editAdReducer, initialEditState);
+export const CreateAd = ({ setAds, setIsCreateAdOpen }) => {
+  const [state, dispatch] = useReducer(formReducer, initialFormState);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/categories');
         dispatch({ type: 'SET_CATEGORIES', payload: res.data });
-        console.log(res.data);
+        if (res.data.length > 0) {
+          dispatch({ type: 'SET_CATEGORY', payload: res.data[0].name });
+        }
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
     };
 
     fetchCategories();
-    dispatch({
-      type: 'SET_INITIAL_STATE',
-      payload: {
-        name: adToEdit.name,
-        category: adToEdit.category,
-        price: adToEdit.price,
-        description: adToEdit.description,
-        images: adToEdit.images[0],
-      },
-    });
-  }, [adToEdit]);
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const userToken = localStorage.getItem('userData')
       ? JSON.parse(localStorage.getItem('userData')).token
       : 'none';
     if (!userToken) {
-      alert('Login to edit the ad');
+      alert('login to Create an Ad');
       return;
     }
-
-    try {
-      await axios.put(
-        `http://localhost:5000/api/ads/${adToEdit._id}`,
-        {
-          name: state.name,
-          category: state.category,
-          price: state.price,
-          description: state.description,
-          user: state.userId,
-          images: [state.images],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'application/json',
+    const postAd = async () => {
+      try {
+        await axios.post(
+          'http://localhost:5000/api/ads',
+          {
+            name: state.name,
+            category: state.category,
+            price: state.price,
+            description: state.description,
+            user: state.userId,
+            images: [state.images],
           },
-        }
-      );
-      alert('Ad updated successfully');
-      setAds((prev) =>
-        prev.map((ad) =>
-          ad._id === adToEdit._id
-            ? {
-                ...ad,
-                name: state.name,
-                category: state.category,
-                price: state.price,
-                description: state.description,
-                images: [state.images],
-              }
-            : ad
-        )
-      );
-    } catch (error) {
-      console.error('Error updating ad:', error);
-      alert('Failed to update ad');
-    }
-
-    setIsEditModalOpen(false);
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        alert('Ad created successfully');
+        const res = await axios.get('http://localhost:5000/api/ads');
+        setAds(res.data);
+      } catch (error) {
+        console.error('Error creating ad:', error);
+        alert('Failed to create ad');
+      }
+    };
+    postAd();
+    setIsCreateAdOpen(false);
   };
 
   return (
@@ -118,26 +97,22 @@ export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
       <div className={styles.modal}>
         <button
           className={styles.btnCloseModal}
-          onClick={() => setIsEditModalOpen(false)}
+          onClick={() => setIsCreateAdOpen(false)}
         >
           &times;
         </button>
-        <h2 className={styles.modalHeader}>Update Ad</h2>
-        <form className={styles.modalForm} onSubmit={handleSubmit}>
+        <h2 className={styles.modalHeader}>Create New Ad</h2>
+        <form className={styles.modalForm} onSubmit={(e) => handleSubmit(e)}>
           <div className={styles.inputContainer}>
             <label className={styles.label}>Choose a Category</label>
             <select
-              value={state.category.name}
-              onChange={(e) => {
-                const selectedCategory = state.categories.find(
-                  (category) => category.name === e.target.value
-                );
-                dispatch({ type: 'SET_CATEGORY', payload: selectedCategory });
-              }}
+              onChange={(e) =>
+                dispatch({ type: 'SET_CATEGORY', payload: e.target.value })
+              }
               required
             >
               {state.categories.map((category) => (
-                <option key={category._id} value={category.name}>
+                <option key={category.name} value={category.name}>
                   {category.name}
                 </option>
               ))}
@@ -179,7 +154,7 @@ export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
             />
           </div>
           <div className={styles.inputContainer}>
-            <label className={styles.label}>Enter an Image URL</label>
+            <label className={styles.label}>Enter an Image url</label>
             <input
               className={styles.input}
               type="text"

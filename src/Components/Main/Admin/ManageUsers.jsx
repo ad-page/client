@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Button from "./SmallerComponents/Button";
-import Spinner from "./SmallerComponents/Spinner";
+import Button from "../SmallerComponents/Button";
+import Spinner from "../SmallerComponents/Spinner";
+import styles from "../../Header/Modals.module.css";
 
 const BASE_URL = "http://localhost:5000/api/users";
 
-const AllUsers = () => {
+const ManageUsers = ({ setIsManageUsersOpen }) => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,7 +27,8 @@ const AllUsers = () => {
           },
         };
 
-        axios.get(`${BASE_URL}`, config).then((res) => setUsers(res.data));
+        const response = await axios.get(`${BASE_URL}`, config);
+        setUsers(response.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -56,19 +58,30 @@ const AllUsers = () => {
   };
 
   if (isLoading) return <Spinner />;
+
   return (
     <div>
-      <h3>Users that are registered ({users.length}): </h3>
-      {users.map((user) => (
-        <p key={user._id}>
-          {user.email}
-          <Button type="delete" onClick={() => handleDelete(user._id)}>
-            &times;
-          </Button>
-        </p>
-      ))}
+      <div className={styles.modal}>
+        <button
+          className={styles.btnCloseModal}
+          onClick={() => setIsManageUsersOpen(false)}
+        >
+          &times;
+        </button>
+        <h3 className={styles.modalHeader}>
+          Users that are registered ({users.length}):{" "}
+        </h3>
+        {users.map((user) => (
+          <p key={user._id}>
+            {user.email}
+            <Button type="delete" onClick={() => handleDelete(user._id)}>
+              &times;
+            </Button>
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default AllUsers;
+export default ManageUsers;

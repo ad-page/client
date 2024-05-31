@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Comments from "./SmallerComponents/Comments";
 import styles from "./Ads.module.css";
 import Button from "./SmallerComponents/Button";
 import Likes from "./SmallerComponents/Likes";
 import axios from "axios";
 import { FaHeart } from "react-icons/fa";
-import { EditAdModal } from "./EditAdModal";
+import { EditAd } from "./AllUsers/EditAd";
 
 const Ads = ({
   filterSelectValue,
@@ -19,11 +19,9 @@ const Ads = ({
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [adToEdit, setAdToEdit] = useState(null);
-  const userData = useMemo(() => {
-    JSON.parse(localStorage.getItem("userData")) || {};
-  }, []);
+  const userData = JSON.parse(localStorage.getItem("userData")) || {};
 
   useEffect(() => {
     const fetchLikedAds = async () => {
@@ -46,7 +44,7 @@ const Ads = ({
     };
 
     fetchLikedAds();
-  }, []);
+  }, [userData.token]);
 
   useEffect(() => {
     const filterAndSort = () => {
@@ -91,7 +89,7 @@ const Ads = ({
   ]);
 
   const handleAdUpdate = (id) => {
-    setIsEditModalOpen(true);
+    setIsEditOpen(true);
     const findAdToEdit = ads.find((adToEdit) => adToEdit._id === id);
     setAdToEdit(findAdToEdit);
   };
@@ -120,50 +118,58 @@ const Ads = ({
   };
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.adContainer}>
-        {filteredAds.map((ad) => (
-          <div key={ad._id} className={styles.singleAd}>
-            {ad.images.map((image) => (
-              <img key={image} src={image} className={styles.adImage} />
-            ))}
-            <Likes
-              userData={userData}
-              ad={ad}
-              likedAds={likedAds}
-              setLikedAds={setLikedAds}
-            />
-            <div className={styles.adContent}>
-              <div>
-                <h2>{ad.name}</h2>
-                <div className={styles.manageAdBtns}>
-                  {userData._id === ad.user._id && (
-                    <Button
-                      type="edit"
-                      onClick={() => {
-                        handleAdUpdate(ad._id);
-                      }}
-                    >
-                      &#9998;
-                    </Button>
-                  )}
-                  {(userData._id === ad.user._id ||
-                    userData.role === "admin") && (
-                    <Button
-                      type="delete"
-                      onClick={() => handleAdDelete(ad._id)}
-                    >
-                      &times;
-                    </Button>
-                  )}
+        {filteredAds.length === 0 ? (
+          <h2>No Ads To Show</h2>
+        ) : (
+          filteredAds.map((ad) => (
+            <div key={ad._id} className={styles.singleAd}>
+              {ad.images.map((image) => (
+                <img key={image} src={image} className={styles.adImage} />
+              ))}
+              <Likes
+                userData={userData}
+                ad={ad}
+                likedAds={likedAds}
+                setLikedAds={setLikedAds}
+              />
+              <div className={styles.adContent}>
+                <div>
+                  <h2>{ad.name}</h2>
+                  <div className={styles.manageAdBtns}>
+                    {userData._id === ad.user._id && (
+                      <Button
+                        type="edit"
+                        onClick={() => {
+                          handleAdUpdate(ad._id);
+                        }}
+                      >
+                        &#9998;
+                      </Button>
+                    )}
+                    {(userData._id === ad.user._id ||
+                      userData.role === "admin") && (
+                      <Button
+                        type="delete"
+                        onClick={() => handleAdDelete(ad._id)}
+                      >
+                        &times;
+                      </Button>
+                    )}
+                  </div>
+                  <p className={styles.price}>{ad.price}&euro;</p>
+                  <p className={styles.category}>{ad.category.name}</p>
+
+                  <p>{ad.description}</p>
+
+                  <Comments
+                    adId={ad._id}
+                    comments={comments[ad._id]}
+                    setComments={setComments}
+                  />
                 </div>
-                <p className={styles.price}>{ad.price}&euro;</p>
-                <p className={styles.category}>{ad.category.name}</p>
 
-                <p>{ad.description}</p>
-              </div>
-
-              {showMyAds ? (
                 <div className={styles.overallNum}>
                   <p>
                     Likes <FaHeart className={styles.likeNum} />:
@@ -173,25 +179,19 @@ const Ads = ({
                     Comments: <span>{ad.comments.length}</span>
                   </p>
                 </div>
-              ) : (
-                <Comments
-                  adId={ad._id}
-                  comments={comments[ad._id]}
-                  setComments={setComments}
-                />
-              )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
-      {isEditModalOpen && (
-        <EditAdModal
-          setIsEditModalOpen={setIsEditModalOpen}
+      {isEditOpen && (
+        <EditAd
+          setIsEditOpen={setIsEditOpen}
           adToEdit={adToEdit}
           setAds={setAds}
         />
       )}
-    </div>
+    </main>
   );
 };
 

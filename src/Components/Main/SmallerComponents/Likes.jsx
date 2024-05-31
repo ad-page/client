@@ -27,7 +27,7 @@ const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
     };
 
     fetchLikedAds();
-  }, [userData, ad]);
+  }, [userData.token, ad._id]);
 
   const handleLike = async (adId) => {
     try {
@@ -66,6 +66,7 @@ const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
       );
     } catch (error) {
       console.error("Error:", error);
+      // setIsLiked((prevIsLiked) => !prevIsLiked);
     }
   };
 
