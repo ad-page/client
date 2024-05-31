@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Filter from './Filter';
 import Navigation from '../Header/Navigation';
-import Admin from './Admin';
+import Admin from './Admin/Admin';
 import Ads from './Ads';
 import Footer from '../Footer/Footer';
-import Simple from './Simple';
+import AllUsers from './AllUsers/AllUsers';
 import axios from 'axios';
 
 function App() {
@@ -62,7 +62,7 @@ function App() {
             Welcome {JSON.parse(localStorage.getItem('userData')).username}
           </h3>
           <div className="manageContainer">
-            <Simple
+            <AllUsers
               setAds={setAds}
               setShowMyAds={setShowMyAds}
               setShowMyFavorites={setShowMyFavorites}

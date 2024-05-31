@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../Header/Modals.module.css';
+import styles from '../../Header/Modals.module.css';
 
 const initialEditState = {
   name: '',
@@ -35,7 +35,7 @@ const editAdReducer = (state, action) => {
   }
 };
 
-export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
+export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
   const [state, dispatch] = useReducer(editAdReducer, initialEditState);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
       alert('Failed to update ad');
     }
 
-    setIsEditModalOpen(false);
+    setIsEditOpen(false);
   };
 
   return (
@@ -118,7 +118,7 @@ export const EditAdModal = ({ adToEdit, setIsEditModalOpen, setAds }) => {
       <div className={styles.modal}>
         <button
           className={styles.btnCloseModal}
-          onClick={() => setIsEditModalOpen(false)}
+          onClick={() => setIsEditOpen(false)}
         >
           &times;
         </button>

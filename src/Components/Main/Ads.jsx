@@ -5,7 +5,7 @@ import Button from './SmallerComponents/Button';
 import Likes from './SmallerComponents/Likes';
 import axios from 'axios';
 import { FaHeart } from 'react-icons/fa';
-import { EditAdModal } from './EditAdModal';
+import { EditAd } from './AllUsers/EditAd';
 
 const Ads = ({
   filterSelectValue,
@@ -19,7 +19,7 @@ const Ads = ({
   const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [adToEdit, setAdToEdit] = useState(null);
   const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
@@ -89,7 +89,7 @@ const Ads = ({
   ]);
 
   const handleAdUpdate = (id) => {
-    setIsEditModalOpen(true);
+    setIsEditOpen(true);
     const findAdToEdit = ads.find((adToEdit) => adToEdit._id === id);
     setAdToEdit(findAdToEdit);
   };
@@ -186,9 +186,9 @@ const Ads = ({
           ))
         )}
       </div>
-      {isEditModalOpen && (
-        <EditAdModal
-          setIsEditModalOpen={setIsEditModalOpen}
+      {isEditOpen && (
+        <EditAd
+          setIsEditOpen={setIsEditOpen}
           adToEdit={adToEdit}
           setAds={setAds}
         />

@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Button from './SmallerComponents/Button';
-import Spinner from './SmallerComponents/Spinner';
-import styles from '../Header/Modals.module.css';
+import Button from '../SmallerComponents/Button';
+import Spinner from '../SmallerComponents/Spinner';
+import styles from '../../Header/Modals.module.css';
 
 const BASE_URL = 'http://localhost:5000/api/users';
 
-const AllUsers = ({ setIsUsersModalOpen }) => {
+const ManageUsers = ({ setIsManageUsersOpen }) => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,7 +62,7 @@ const AllUsers = ({ setIsUsersModalOpen }) => {
       <div className={styles.modal}>
         <button
           className={styles.btnCloseModal}
-          onClick={() => setIsUsersModalOpen(false)}
+          onClick={() => setIsManageUsersOpen(false)}
         >
           &times;
         </button>
@@ -82,4 +82,4 @@ const AllUsers = ({ setIsUsersModalOpen }) => {
   );
 };
 
-export default AllUsers;
+export default ManageUsers;

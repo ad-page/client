@@ -1,9 +1,13 @@
-export const ManageCategoriesModal = () => {
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Button from '../SmallerComponents/Button';
+import styles from '../../Header/Modals.module.css';
+
+export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
   const userToken = JSON.parse(localStorage.getItem('userData')).token;
   const [categories, setCategories] = useState([]);
-
   const [newCategory, setNewCategory] = useState('');
-  // GET categoies
+
   const getCategories = () => {
     try {
       axios
@@ -13,8 +17,8 @@ export const ManageCategoriesModal = () => {
       console.log(error);
     }
   };
-  //POST categories
-  const postCategories = (data) => {
+
+  const postCategory = (data) => {
     try {
       axios
         .post('http://localhost:5000/api/categories', data, {
@@ -50,7 +54,7 @@ export const ManageCategoriesModal = () => {
   const handleCategorySubmit = (ev) => {
     ev.preventDefault();
     const data = { name: newCategory };
-    postCategories(data);
+    postCategory(data);
     setNewCategory('');
   };
   const handleCatInput = (el) => {
@@ -61,7 +65,14 @@ export const ManageCategoriesModal = () => {
   };
 
   return (
-    <div>
+    <div className={styles.modal}>
+      <button
+        className={styles.btnCloseModal}
+        onClick={() => setIsManageCategoriesOpen(false)}
+      >
+        &times;
+      </button>
+      <h3 className={styles.modalHeader}>Categories</h3>
       <ol>
         {categories.map((e) => (
           <li key={e._id}>
@@ -72,14 +83,15 @@ export const ManageCategoriesModal = () => {
           </li>
         ))}
       </ol>
-      <form onSubmit={handleCategorySubmit}>
+      <form className={styles.modalForm} onSubmit={handleCategorySubmit}>
         <input
+          className={styles.input}
           type="text"
           value={newCategory}
           onChange={handleCatInput}
           required
         />
-        <Button type="submit" className={styles.categoriesBtn}>
+        <Button type="submit" className={styles.btn}>
           Add new
         </Button>
       </form>

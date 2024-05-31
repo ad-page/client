@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../Header/Modals.module.css';
+import styles from '../../Header/Modals.module.css';
 
 const initialFormState = {
   name: '',
@@ -33,7 +33,7 @@ const formReducer = (state, action) => {
   }
 };
 
-export const CreateAdModal = ({ setAds, setIsCreateAdModalOpen }) => {
+export const CreateAd = ({ setAds, setIsCreateAdOpen }) => {
   const [state, dispatch] = useReducer(formReducer, initialFormState);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export const CreateAdModal = ({ setAds, setIsCreateAdModalOpen }) => {
       }
     };
     postAd();
-    setIsCreateAdModalOpen(false);
+    setIsCreateAdOpen(false);
   };
 
   return (
@@ -97,7 +97,7 @@ export const CreateAdModal = ({ setAds, setIsCreateAdModalOpen }) => {
       <div className={styles.modal}>
         <button
           className={styles.btnCloseModal}
-          onClick={() => setIsCreateAdModalOpen(false)}
+          onClick={() => setIsCreateAdOpen(false)}
         >
           &times;
         </button>
