@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
+const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
@@ -18,6 +18,8 @@ const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
             "http://localhost:5000/api/ads/liked",
             config
           );
+          console.log(response.data.length);
+
           const likedAdIds = response.data.map((likedAd) => likedAd._id);
           setIsLiked(likedAdIds.includes(ad._id));
         } catch (error) {
@@ -27,7 +29,7 @@ const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
     };
 
     fetchLikedAds();
-  }, [userData, ad]);
+  }, [userData.token, ad._id]);
 
   const handleLike = async (adId) => {
     try {
@@ -64,8 +66,22 @@ const Likes = ({ userData, ad, likedAds, setLikedAds }) => {
         {},
         config
       );
+
+      setAds((prevAds) =>
+        prevAds.map((ad) =>
+          ad._id === adId
+            ? {
+                ...ad,
+                likes: isLiked
+                  ? ad.likes.filter((like) => like !== userId)
+                  : [...ad.likes, userId],
+              }
+            : ad
+        )
+      );
     } catch (error) {
       console.error("Error:", error);
+      // setIsLiked((prevIsLiked) => !prevIsLiked);
     }
   };
 

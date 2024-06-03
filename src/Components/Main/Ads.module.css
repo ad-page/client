@@ -98,7 +98,6 @@
 .overallNum {
   display: flex;
   gap: 24px;
-  align-items: center;
 }
 .overallNum p {
   color: #999;
