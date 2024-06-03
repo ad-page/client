@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { CreateAd } from './CreateAd';
-import Button from '../SmallerComponents/Button';
+import React, { useState } from "react";
+import { CreateAd } from "./CreateAd";
+import Button from "../SmallerComponents/Button";
 
 const Simple = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
   const [isCreateAdOpen, setIsCreateAdOpen] = useState(false);

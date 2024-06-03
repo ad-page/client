@@ -41,7 +41,7 @@
 
 .highlight::after {
   display: block;
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -59,6 +59,11 @@
   grid-template-columns: 1fr 2fr;
   align-items: center;
   gap: 2.5rem;
+}
+
+.modalForm select {
+  border-radius: 14px;
+  padding: 6px 12px;
 }
 
 .btn {
@@ -111,4 +116,18 @@
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
+}
+
+.categoriesForm {
+  display: flex;
+  gap: 12px;
+  margin-left: -36px;
+}
+
+.categoriesForm button {
+  transform: translateY(10%);
+}
+
+.editSubmitBtns {
+  transform: translateY(25%);
 }

@@ -1,10 +1,10 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Button from '../SmallerComponents/Button';
-import Spinner from '../SmallerComponents/Spinner';
-import styles from '../../Header/Modals.module.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Button from "../SmallerComponents/Button";
+import Spinner from "../SmallerComponents/Spinner";
+import styles from "../../Header/Modals.module.css";
 
-const BASE_URL = 'http://localhost:5000/api/users';
+const BASE_URL = "http://localhost:5000/api/users";
 
 const ManageUsers = ({ setIsManageUsersOpen }) => {
   const [users, setUsers] = useState([]);
@@ -14,11 +14,11 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
     const fetchUsers = async () => {
       setIsLoading(true);
       try {
-        const userData = JSON.parse(localStorage.getItem('userData'));
+        const userData = JSON.parse(localStorage.getItem("userData"));
         const token = userData?.token;
 
         if (!token) {
-          throw new Error('No token');
+          throw new Error("No token");
         }
 
         const config = {
@@ -27,7 +27,8 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
           },
         };
 
-        axios.get(`${BASE_URL}`, config).then((res) => setUsers(res.data));
+        const response = await axios.get(`${BASE_URL}`, config);
+        setUsers(response.data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -39,11 +40,11 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
   }, []);
 
   const handleDelete = (id) => {
-    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userData = JSON.parse(localStorage.getItem("userData"));
     const token = userData?.token;
 
     if (!token) {
-      throw new Error('No token');
+      throw new Error("No token");
     }
 
     const config = {
@@ -57,6 +58,7 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
   };
 
   if (isLoading) return <Spinner />;
+
   return (
     <>
       <div className={styles.modal}>
@@ -67,7 +69,7 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
           &times;
         </button>
         <h3 className={styles.modalHeader}>
-          Users that are registered ({users.length}):{' '}
+          Users that are registered ({users.length}):{" "}
         </h3>
         {users.map((user) => (
           <p key={user._id}>

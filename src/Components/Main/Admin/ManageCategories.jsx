@@ -1,30 +1,34 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Button from '../SmallerComponents/Button';
-import styles from '../../Header/Modals.module.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Button from "../SmallerComponents/Button";
+import styles from "../../Header/Modals.module.css";
+import Spinner from "../SmallerComponents/Spinner";
 
 export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
-  const userToken = JSON.parse(localStorage.getItem('userData')).token;
+  const userToken = JSON.parse(localStorage.getItem("userData")).token;
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState('');
+  const [newCategory, setNewCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getCategories = () => {
+  const getCategories = async () => {
+    setIsLoading(true);
     try {
-      axios
-        .get('http://localhost:5000/api/categories')
-        .then((res) => setCategories(res.data));
+      const response = await axios.get("http://localhost:5000/api/categories");
+      setCategories(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const postCategory = (data) => {
     try {
       axios
-        .post('http://localhost:5000/api/categories', data, {
+        .post("http://localhost:5000/api/categories", data, {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
         .then((res) => getCategories());
@@ -42,7 +46,7 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
         .delete(`http://localhost:5000/api/categories/${id}`, {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
         .then((res) => getCategories());
@@ -55,7 +59,7 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
     ev.preventDefault();
     const data = { name: newCategory };
     postCategory(data);
-    setNewCategory('');
+    setNewCategory("");
   };
   const handleCatInput = (el) => {
     setNewCategory(el.target.value);
@@ -63,6 +67,8 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
   const handleCategoryDelete = (id) => {
     deleteCategories(id);
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -84,7 +90,7 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
             </li>
           ))}
         </ol>
-        <form className={styles.modalForm} onSubmit={handleCategorySubmit}>
+        <form className={styles.categoriesForm} onSubmit={handleCategorySubmit}>
           <input
             className={styles.input}
             type="text"
