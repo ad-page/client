@@ -111,3 +111,7 @@
 .likeNum {
   color: #ffb545;
 }
+
+.comments {
+  cursor: pointer;
+}

@@ -16,13 +16,13 @@ const Ads = ({
   showMyFavorites,
   showMyAds,
 }) => {
-  const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [adToEdit, setAdToEdit] = useState(null);
-
-  const userData = JSON.parse(localStorage.getItem("userData")) || {};
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [adToComment, setAdToComment] = useState(null);
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   useEffect(() => {
     const fetchLikedAds = async () => {
@@ -91,10 +91,16 @@ const Ads = ({
     userData._id,
   ]);
 
+  const handleComments = (id) => {
+    const findAdToComment = ads.find((adToComment) => adToComment._id === id);
+    setAdToComment(findAdToComment);
+    setIsCommentsOpen(true);
+  };
+
   const handleAdUpdate = (id) => {
-    setIsEditOpen(true);
     const findAdToEdit = ads.find((adToEdit) => adToEdit._id === id);
     setAdToEdit(findAdToEdit);
+    setIsEditOpen(true);
   };
 
   const handleAdDelete = async (id) => {
@@ -167,18 +173,15 @@ const Ads = ({
 
                   <p>{ad.description}</p>
 
-                  <Comments
-                    adId={ad._id}
-                    comments={comments[ad._id]}
-                    setComments={setComments}
-                  />
-                </div>
-
                 <div className={styles.overallNum}>
                   <p>
                     Likes <FaHeart className={styles.likeNum} />:
                     <span> {ad.likes.length}</span>
                   </p>
+                  <p
+                    onClick={() => handleComments(ad._id)}
+                    className={styles.comments}
+                  >
                   <p>
                     Comments: <span>{ad.comments.length}</span>
                   </p>
@@ -188,6 +191,13 @@ const Ads = ({
           ))
         )}
       </div>
+      {isCommentsOpen && (
+        <Comments
+          setIsCommentsOpen={setIsCommentsOpen}
+          adToComment={adToComment}
+          setAds={setAds}
+        />
+      )}
       {isEditOpen && (
         <EditAd
           setIsEditOpen={setIsEditOpen}
