@@ -1,34 +1,34 @@
-import { useReducer, useEffect } from "react";
-import axios from "axios";
-import styles from "../../Header/Modals.module.css";
+import { useReducer, useEffect } from 'react';
+import axios from 'axios';
+import styles from '../../Header/Modals.module.css';
 
 const initialEditState = {
-  name: "",
+  name: '',
   category: {},
-  price: "",
-  description: "",
-  images: "",
+  price: '',
+  description: '',
+  images: '',
   categories: [],
-  userId: localStorage.getItem("userData")
-    ? JSON.parse(localStorage.getItem("userData"))._id
-    : "none",
+  userId: localStorage.getItem('userData')
+    ? JSON.parse(localStorage.getItem('userData'))._id
+    : 'none',
 };
 
 const editAdReducer = (state, action) => {
   switch (action.type) {
-    case "SET_NAME":
+    case 'SET_NAME':
       return { ...state, name: action.payload };
-    case "SET_CATEGORY":
+    case 'SET_CATEGORY':
       return { ...state, category: action.payload };
-    case "SET_PRICE":
+    case 'SET_PRICE':
       return { ...state, price: action.payload };
-    case "SET_DESCRIPTION":
+    case 'SET_DESCRIPTION':
       return { ...state, description: action.payload };
-    case "SET_IMAGES":
+    case 'SET_IMAGES':
       return { ...state, images: action.payload };
-    case "SET_CATEGORIES":
+    case 'SET_CATEGORIES':
       return { ...state, categories: action.payload };
-    case "SET_INITIAL_STATE":
+    case 'SET_INITIAL_STATE':
       return { ...state, ...action.payload };
     default:
       return state;
@@ -41,17 +41,17 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories");
-        dispatch({ type: "SET_CATEGORIES", payload: res.data });
+        const res = await axios.get('http://localhost:5000/api/categories');
+        dispatch({ type: 'SET_CATEGORIES', payload: res.data });
         console.log(res.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error('Error fetching categories:', error);
       }
     };
 
     fetchCategories();
     dispatch({
-      type: "SET_INITIAL_STATE",
+      type: 'SET_INITIAL_STATE',
       payload: {
         name: adToEdit.name,
         category: adToEdit.category,
@@ -64,11 +64,11 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userToken = localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData")).token
-      : "none";
+    const userToken = localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).token
+      : 'none';
     if (!userToken) {
-      alert("Login to edit the ad");
+      alert('Login to edit the ad');
       return;
     }
 
@@ -86,11 +86,11 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
-      alert("Ad updated successfully");
+      alert('Ad updated successfully');
       setAds((prev) =>
         prev.map((ad) =>
           ad._id === adToEdit._id
@@ -106,8 +106,8 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
         )
       );
     } catch (error) {
-      console.error("Error updating ad:", error);
-      alert("Failed to update ad");
+      console.error('Error updating ad:', error);
+      alert('Failed to update ad');
     }
 
     setIsEditOpen(false);
@@ -132,7 +132,7 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
                 const selectedCategory = state.categories.find(
                   (category) => category.name === e.target.value
                 );
-                dispatch({ type: "SET_CATEGORY", payload: selectedCategory });
+                dispatch({ type: 'SET_CATEGORY', payload: selectedCategory });
               }}
               required
             >
@@ -150,7 +150,7 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
               type="text"
               value={state.name}
               onChange={(e) =>
-                dispatch({ type: "SET_NAME", payload: e.target.value })
+                dispatch({ type: 'SET_NAME', payload: e.target.value })
               }
               required
             />
@@ -162,7 +162,7 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
               type="number"
               value={state.price}
               onChange={(e) =>
-                dispatch({ type: "SET_PRICE", payload: e.target.value })
+                dispatch({ type: 'SET_PRICE', payload: e.target.value })
               }
               required
             />
@@ -170,11 +170,11 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
           <div className={styles.inputContainer}>
             <label className={styles.label}>Enter a Description</label>
             <textarea
-              style={{ resize: "none" }}
+              style={{ resize: 'none' }}
               className={styles.input}
               value={state.description}
               onChange={(e) =>
-                dispatch({ type: "SET_DESCRIPTION", payload: e.target.value })
+                dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value })
               }
               required
             />
@@ -186,7 +186,7 @@ export const EditAd = ({ adToEdit, setIsEditOpen, setAds }) => {
               type="text"
               value={state.images}
               onChange={(e) =>
-                dispatch({ type: "SET_IMAGES", payload: e.target.value })
+                dispatch({ type: 'SET_IMAGES', payload: e.target.value })
               }
               required
             />

@@ -1,35 +1,33 @@
-import { useEffect, useState } from "react";
-import Filter from "./Filter";
-import Navigation from "../Header/Navigation";
-import Admin from "./Admin/Admin";
-import Ads from "./Ads";
-import Footer from "../Footer/Footer";
-import AllUsers from "./AllUsers/AllUsers";
-import axios from "axios";
-import styles from "./Homepage.module.css";
+import { useEffect, useState } from 'react';
+import Filter from './Filter';
+import Navigation from '../Header/Navigation';
+import Admin from './Admin/Admin';
+import Ads from './Ads';
+import Footer from '../Footer/Footer';
+import AllUsers from './AllUsers/AllUsers';
+import axios from 'axios';
+import styles from './Homepage.module.css';
 
 function App() {
-  const [filterSelectValue, setfilterSelectValue] = useState("all");
-  const [filterInputValue, setfilterInputValue] = useState("");
-  const [adsShowOrder, setAdsShowOrder] = useState("default");
-  const [userRole, setUserRole] = useState(
-    localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData")).role
-      : "none"
-  );
-
   const [ads, setAds] = useState([]);
+  const [filterSelectValue, setfilterSelectValue] = useState('all');
+  const [filterInputValue, setfilterInputValue] = useState('');
+  const [adsShowOrder, setAdsShowOrder] = useState('default');
   const [showMyAds, setShowMyAds] = useState(false);
   const [showMyFavorites, setShowMyFavorites] = useState(false);
+  const [userRole, setUserRole] = useState(
+    localStorage.getItem('userData')
+      ? JSON.parse(localStorage.getItem('userData')).role
+      : 'none'
+  );
 
   useEffect(() => {
     const getAds = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/ads");
+        const res = await axios.get('http://localhost:5000/api/ads');
         setAds(res.data);
-        console.log(res.data);
       } catch (error) {
-        console.error("Error fetching ads:", error);
+        console.error('Error fetching ads:', error);
       }
     };
     getAds();
@@ -44,7 +42,7 @@ function App() {
         setfilterSelectValue={setfilterSelectValue}
         setAdsShowOrder={setAdsShowOrder}
       />
-      {userRole !== "none" ? (
+      {userRole !== 'none' ? (
         <>
           <div className={styles.usersContainer}>
             <AllUsers
@@ -52,7 +50,7 @@ function App() {
               setShowMyAds={setShowMyAds}
               setShowMyFavorites={setShowMyFavorites}
             />
-            {userRole === "admin" ? (
+            {userRole === 'admin' ? (
               <>
                 <Admin />
               </>

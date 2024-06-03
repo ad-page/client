@@ -45,7 +45,7 @@ const Ads = ({
     };
 
     fetchLikedAds();
-  }, []);
+  }, [userData.token]);
 
   useEffect(() => {
     const filterAndSort = () => {
@@ -87,6 +87,7 @@ const Ads = ({
     adsShowOrder,
     showMyAds,
     showMyFavorites,
+    userData._id,
   ]);
 
   const handleComments = (id) => {
@@ -125,7 +126,7 @@ const Ads = ({
   };
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.adContainer}>
         {filteredAds.length === 0 ? (
           <h2>No Ads To Show</h2>
@@ -140,6 +141,7 @@ const Ads = ({
                 ad={ad}
                 likedAds={likedAds}
                 setLikedAds={setLikedAds}
+                setAds={setAds}
               />
               <div className={styles.adContent}>
                 <div>
@@ -202,7 +204,7 @@ const Ads = ({
           setAds={setAds}
         />
       )}
-    </div>
+    </main>
   );
 };
 
