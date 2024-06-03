@@ -16,11 +16,12 @@ const Ads = ({
   showMyFavorites,
   showMyAds,
 }) => {
-  const [comments, setComments] = useState({});
   const [filteredAds, setFilteredAds] = useState([]);
   const [likedAds, setLikedAds] = useState([]);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [adToEdit, setAdToEdit] = useState(null);
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [adToComment, setAdToComment] = useState(null);
   const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   useEffect(() => {
@@ -88,10 +89,16 @@ const Ads = ({
     showMyFavorites,
   ]);
 
+  const handleComments = (id) => {
+    const findAdToComment = ads.find((adToComment) => adToComment._id === id);
+    setAdToComment(findAdToComment);
+    setIsCommentsOpen(true);
+  };
+
   const handleAdUpdate = (id) => {
-    setIsEditOpen(true);
     const findAdToEdit = ads.find((adToEdit) => adToEdit._id === id);
     setAdToEdit(findAdToEdit);
+    setIsEditOpen(true);
   };
 
   const handleAdDelete = async (id) => {
@@ -164,28 +171,30 @@ const Ads = ({
                   <p>{ad.description}</p>
                 </div>
 
-                {showMyAds ? (
-                  <div className={styles.overallNum}>
-                    <p>
-                      Likes <FaHeart className={styles.likeNum} />:
-                      <span> {ad.likes.length}</span>
-                    </p>
-                    <p>
-                      Comments: <span>{ad.comments.length}</span>
-                    </p>
-                  </div>
-                ) : (
-                  <Comments
-                    adId={ad._id}
-                    comments={comments[ad._id]}
-                    setComments={setComments}
-                  />
-                )}
+                <div className={styles.overallNum}>
+                  <p>
+                    Likes <FaHeart className={styles.likeNum} />:
+                    <span> {ad.likes.length}</span>
+                  </p>
+                  <p
+                    onClick={() => handleComments(ad._id)}
+                    className={styles.comments}
+                  >
+                    Comments: <span>{ad.comments.length}</span>
+                  </p>
+                </div>
               </div>
             </div>
           ))
         )}
       </div>
+      {isCommentsOpen && (
+        <Comments
+          setIsCommentsOpen={setIsCommentsOpen}
+          adToComment={adToComment}
+          setAds={setAds}
+        />
+      )}
       {isEditOpen && (
         <EditAd
           setIsEditOpen={setIsEditOpen}

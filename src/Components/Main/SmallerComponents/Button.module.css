@@ -19,6 +19,14 @@
   margin-left: 6px;
 }
 
+.show:hover {
+  background-color: #4bbb7d;
+}
+.show:active {
+  background-color: #2e975d;
+  transition: 0.3s;
+}
+
 .delete {
   color: red;
   background-color: transparent;

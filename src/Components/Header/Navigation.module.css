@@ -37,11 +37,6 @@
   background-color: #5ec576;
 }
 
-.btnSign:hover,
-.btnSign:active {
-  background-color: #4bbb7d;
-}
-
 .loggedUsername {
   display: flex;
   gap: 12px;
