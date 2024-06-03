@@ -90,7 +90,7 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
             </li>
           ))}
         </ol>
-        <form className={styles.modalForm} onSubmit={handleCategorySubmit}>
+        <form className={styles.categoriesForm} onSubmit={handleCategorySubmit}>
           <input
             className={styles.input}
             type="text"

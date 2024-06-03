@@ -117,3 +117,17 @@
   right: 12px;
   transform: translateY(-50%);
 }
+
+.categoriesForm {
+  display: flex;
+  gap: 12px;
+  margin-left: -36px;
+}
+
+.categoriesForm button {
+  transform: translateY(10%);
+}
+
+.editSubmitBtns {
+  transform: translateY(25%);
+}
