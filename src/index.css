@@ -4,9 +4,10 @@ body {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   color: #333;
+  min-height: 100vh;
 }
 
-.manageContainer {
+.userContainer {
   display: flex;
   justify-content: center;
   align-items: center;

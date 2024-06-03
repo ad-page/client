@@ -6,6 +6,7 @@ import Ads from './Ads';
 import Footer from '../Footer/Footer';
 import AllUsers from './AllUsers/AllUsers';
 import axios from 'axios';
+import styles from './Homepage.module.css';
 
 function App() {
   const [filterSelectValue, setfilterSelectValue] = useState('all');
@@ -42,31 +43,19 @@ function App() {
         setfilterSelectValue={setfilterSelectValue}
         setAdsShowOrder={setAdsShowOrder}
       />
-      {userRole === 'admin' ? (
+      {userRole !== 'none' ? (
         <>
-          <h3>
-            Welcome {JSON.parse(localStorage.getItem('userData')).username}
-          </h3>
-          <div className="manageContainer">
-            <Admin
-              setAds={setAds}
-              setShowMyAds={setShowMyAds}
-              setShowMyFavorites={setShowMyFavorites}
-            />
-          </div>
-        </>
-      ) : null}
-      {userRole === 'simple' ? (
-        <>
-          <h3>
-            Welcome {JSON.parse(localStorage.getItem('userData')).username}
-          </h3>
-          <div className="manageContainer">
+          <div className={styles.usersContainer}>
             <AllUsers
               setAds={setAds}
               setShowMyAds={setShowMyAds}
               setShowMyFavorites={setShowMyFavorites}
             />
+            {userRole === 'admin' ? (
+              <>
+                <Admin />
+              </>
+            ) : null}
           </div>
         </>
       ) : null}
