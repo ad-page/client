@@ -60,7 +60,7 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div>
+    <>
       <div className={styles.modal}>
         <button
           className={styles.btnCloseModal}
@@ -80,7 +80,8 @@ const ManageUsers = ({ setIsManageUsersOpen }) => {
           </p>
         ))}
       </div>
-    </div>
+      <div className={styles.overlay}></div>
+    </>
   );
 };
 

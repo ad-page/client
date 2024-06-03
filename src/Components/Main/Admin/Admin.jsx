@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import ManageUsers from './ManageUsers';
 import Button from '../SmallerComponents/Button';
-import AllUsers from '../AllUsers/AllUsers';
 import styles from './Admin.module.css';
 import { ManageCategories } from './ManageCategories';
 
-const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
+const Admin = () => {
   const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
   const [isManageCategoriesOpen, setIsManageCategoriesOpen] = useState(false);
 
@@ -18,11 +17,6 @@ const Admin = ({ setAds, setShowMyAds, setShowMyFavorites }) => {
         Categories
       </Button>
 
-      <AllUsers
-        setAds={setAds}
-        setShowMyAds={setShowMyAds}
-        setShowMyFavorites={setShowMyFavorites}
-      />
       {isManageUsersOpen && (
         <ManageUsers setIsManageUsersOpen={setIsManageUsersOpen} />
       )}

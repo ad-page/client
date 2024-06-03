@@ -21,6 +21,7 @@ const Ads = ({
   const [likedAds, setLikedAds] = useState([]);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [adToEdit, setAdToEdit] = useState(null);
+
   const userData = JSON.parse(localStorage.getItem("userData")) || {};
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const Ads = ({
             config
           );
           setLikedAds(response.data);
+          console.log(response);
         } catch (error) {
           console.error("Error fetching liked ads:", error);
         }
@@ -86,6 +88,7 @@ const Ads = ({
     adsShowOrder,
     showMyAds,
     showMyFavorites,
+    userData._id,
   ]);
 
   const handleAdUpdate = (id) => {
@@ -133,6 +136,7 @@ const Ads = ({
                 ad={ad}
                 likedAds={likedAds}
                 setLikedAds={setLikedAds}
+                setAds={setAds}
               />
               <div className={styles.adContent}>
                 <div>

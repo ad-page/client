@@ -71,36 +71,39 @@ export const ManageCategories = ({ setIsManageCategoriesOpen }) => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className={styles.modal}>
-      <button
-        className={styles.btnCloseModal}
-        onClick={() => setIsManageCategoriesOpen(false)}
-      >
-        &times;
-      </button>
-      <h3 className={styles.modalHeader}>Categories</h3>
-      <ol>
-        {categories.map((e) => (
-          <li key={e._id}>
-            <span>{e.name}</span>
-            <Button type="delete" onClick={() => handleCategoryDelete(e._id)}>
-              &times;
-            </Button>
-          </li>
-        ))}
-      </ol>
-      <form className={styles.modalForm} onSubmit={handleCategorySubmit}>
-        <input
-          className={styles.input}
-          type="text"
-          value={newCategory}
-          onChange={handleCatInput}
-          required
-        />
-        <Button type="submit" className={styles.btn}>
-          Add new
-        </Button>
-      </form>
-    </div>
+    <>
+      <div className={styles.modal}>
+        <button
+          className={styles.btnCloseModal}
+          onClick={() => setIsManageCategoriesOpen(false)}
+        >
+          &times;
+        </button>
+        <h3 className={styles.modalHeader}>Categories</h3>
+        <ol>
+          {categories.map((e) => (
+            <li key={e._id}>
+              <span>{e.name}</span>
+              <Button type="delete" onClick={() => handleCategoryDelete(e._id)}>
+                &times;
+              </Button>
+            </li>
+          ))}
+        </ol>
+        <form className={styles.modalForm} onSubmit={handleCategorySubmit}>
+          <input
+            className={styles.input}
+            type="text"
+            value={newCategory}
+            onChange={handleCatInput}
+            required
+          />
+          <Button type="submit" className={styles.btn}>
+            Add new
+          </Button>
+        </form>
+      </div>
+      <div className={styles.overlay}></div>
+    </>
   );
 };
