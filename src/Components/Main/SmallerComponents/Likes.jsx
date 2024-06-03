@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -15,15 +15,13 @@ const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
             },
           };
           const response = await axios.get(
-            "http://localhost:5000/api/ads/liked",
+            'http://localhost:5000/api/ads/liked',
             config
           );
-          console.log(response.data.length);
-
           const likedAdIds = response.data.map((likedAd) => likedAd._id);
           setIsLiked(likedAdIds.includes(ad._id));
         } catch (error) {
-          console.error("Error fetching liked ads:", error);
+          console.error('Error fetching liked ads:', error);
         }
       }
     };
@@ -52,7 +50,7 @@ const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
       const token = userData?.token;
 
       if (!token) {
-        throw new Error("No token");
+        throw new Error('No token');
       }
 
       const config = {
@@ -80,7 +78,7 @@ const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
         )
       );
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
       // setIsLiked((prevIsLiked) => !prevIsLiked);
     }
   };
@@ -88,18 +86,18 @@ const Likes = ({ userData, ad, likedAds, setLikedAds, setAds }) => {
   return (
     <div
       style={{
-        position: "absolute",
-        right: "24px",
-        top: "24px",
+        position: 'absolute',
+        right: '24px',
+        top: '24px',
       }}
     >
       {userData.token ? (
         <i onClick={() => handleLike(ad._id)}>
           {isLiked ? (
-            <FaHeart style={{ width: "25px", height: "25px", color: "red" }} />
+            <FaHeart style={{ width: '25px', height: '25px', color: 'red' }} />
           ) : (
             <FaRegHeart
-              style={{ width: "25px", height: "25px", color: "red" }}
+              style={{ width: '25px', height: '25px', color: 'red' }}
             />
           )}
         </i>
