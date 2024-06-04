@@ -3,24 +3,49 @@ import styles from '../../Header/Modals.module.css';
 import axios from 'axios';
 
 const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
+  const [allComments, setAllComments] = useState([]);
   const [comment, setComment] = useState('');
+  const userToken = localStorage.getItem('userData')
+    ? JSON.parse(localStorage.getItem('userData')).token
+    : 'none';
+
+  const getComments = async () => {
+    try {
+      const comments = await axios.get(
+        `http://localhost:5000/api/comments/ad/`,
+        { params: { adId: adToComment._id } }
+      );
+      setAllComments(comments.data.data);
+    } catch (error) {
+      console.error('Error fetching Comments:', error);
+      alert('Failed to fetch Comments');
+    }
+  };
+  useEffect(() => {
+    getComments();
+  }, []);
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    const userToken = localStorage.getItem('userData')
-      ? JSON.parse(localStorage.getItem('userData')).token
-      : 'none';
+
     if (!userToken) {
       alert('login to Comment an Ad');
       return;
     }
     const createComment = async () => {
+      const generateTimestampId = () => {
+        const timestamp = Date.now().toString(16);
+        return timestamp.padStart(24, '0');
+      };
+      const timestampId = generateTimestampId();
+
       try {
         await axios.post(
           'http://localhost:5000/api/comments',
           {
             comment: comment,
             adId: adToComment._id,
+            _id: timestampId,
           },
           {
             headers: {
@@ -30,15 +55,28 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
           }
         );
         alert('Comment created successfully');
-        const res = await axios.get('http://localhost:5000/api/ads');
-        setAds(res.data);
+        setAllComments((prev) => [
+          ...prev,
+          {
+            comment: comment,
+            adId: adToComment._id,
+            _id: timestampId,
+          },
+        ]);
+        setAds((prevAds) =>
+          prevAds.map((ad) =>
+            ad._id === adToComment._id
+              ? { ...ad, comments: [...ad.comments, timestampId] }
+              : ad
+          )
+        );
       } catch (error) {
         console.error('Error creating Comment:', error);
         alert('Failed to create Comment');
       }
     };
     createComment();
-    setIsCommentsOpen(false);
+    setComment('');
   };
 
   return (
@@ -50,8 +88,15 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
         >
           &times;
         </button>
-        <h2 className={styles.modalHeader}>Comments on {adToComment.name}</h2>
-        <div>{console.log(adToComment.comments)}</div>
+        <div>
+          {allComments.length > 0 ? (
+            allComments.map((comment) => (
+              <p key={comment._id}>{comment.comment}</p>
+            ))
+          ) : (
+            <h2>No Comments yet</h2>
+          )}
+        </div>
         <form className={styles.modalForm} onSubmit={handleCommentSubmit}>
           <div className={styles.inputContainer}>
             <label className={styles.label}>Enter Your Comment</label>
