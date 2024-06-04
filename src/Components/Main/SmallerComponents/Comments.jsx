@@ -7,7 +7,7 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
   const [comment, setComment] = useState('');
   const userToken = localStorage.getItem('userData')
     ? JSON.parse(localStorage.getItem('userData')).token
-    : 'none';
+    : null;
 
   const getComments = async () => {
     try {
@@ -97,21 +97,23 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
             <h2>No Comments yet</h2>
           )}
         </div>
-        <form className={styles.modalForm} onSubmit={handleCommentSubmit}>
-          <div className={styles.inputContainer}>
-            <label className={styles.label}>Enter Your Comment</label>
-            <input
-              className={styles.input}
-              type="text"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className={styles.btn}>
-            Submit
-          </button>
-        </form>
+        {userToken && (
+          <form className={styles.modalForm} onSubmit={handleCommentSubmit}>
+            <div className={styles.inputContainer}>
+              <label className={styles.label}>Enter Your Comment</label>
+              <input
+                className={styles.input}
+                type="text"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className={styles.btn}>
+              Submit
+            </button>
+          </form>
+        )}
       </div>
       <div className={styles.overlay}></div>
     </>
