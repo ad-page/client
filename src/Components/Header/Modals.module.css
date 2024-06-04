@@ -131,3 +131,20 @@
 .editSubmitBtns {
   transform: translateY(25%);
 }
+
+.comments {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comment {
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.username {
+  font-weight: bold;
+}

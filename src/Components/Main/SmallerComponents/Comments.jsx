@@ -5,8 +5,8 @@ import axios from 'axios';
 const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
   const [allComments, setAllComments] = useState([]);
   const [comment, setComment] = useState('');
-  const userToken = localStorage.getItem('userData')
-    ? JSON.parse(localStorage.getItem('userData')).token
+  const userData = localStorage.getItem('userData')
+    ? JSON.parse(localStorage.getItem('userData'))
     : null;
 
   const getComments = async () => {
@@ -16,6 +16,7 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
         { params: { adId: adToComment._id } }
       );
       setAllComments(comments.data.data);
+      console.log(comments.data.data);
     } catch (error) {
       console.error('Error fetching Comments:', error);
       alert('Failed to fetch Comments');
@@ -28,7 +29,7 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
 
-    if (!userToken) {
+    if (!userData) {
       alert('login to Comment an Ad');
       return;
     }
@@ -49,7 +50,7 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${userToken}`,
+              Authorization: `Bearer ${userData.token}`,
               'Content-Type': 'application/json',
             },
           }
@@ -61,6 +62,7 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
             comment: comment,
             adId: adToComment._id,
             _id: timestampId,
+            user: userData,
           },
         ]);
         setAds((prevAds) =>
@@ -88,16 +90,19 @@ const Comments = ({ setIsCommentsOpen, adToComment, setAds }) => {
         >
           &times;
         </button>
-        <div>
+        <div className={styles.comments}>
           {allComments.length > 0 ? (
             allComments.map((comment) => (
-              <p key={comment._id}>{comment.comment}</p>
+              <div key={comment._id} className={styles.comment}>
+                <p className={styles.username}>{comment.user.username}</p>
+                <p> {comment.comment}</p>
+              </div>
             ))
           ) : (
             <h2>No Comments yet</h2>
           )}
         </div>
-        {userToken && (
+        {userData && (
           <form className={styles.modalForm} onSubmit={handleCommentSubmit}>
             <div className={styles.inputContainer}>
               <label className={styles.label}>Enter Your Comment</label>
